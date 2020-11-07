@@ -1,0 +1,123 @@
+:root {
+    --border-prop: 0px solid #F2F;
+
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #222;
+    margin: 0;
+}
+
+h1 {
+    font-size: 3em;
+    padding: 0px;
+    margin: 0px;
+}
+
+input {
+    width: 100%;
+    font-family: Arial;
+    font-size: 2em;
+    color: white;
+    padding: 0;
+    padding-bottom: 5px;
+    background: #222;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 15px;
+    margin-top: 15px
+}
+
+input:focus {
+    outline: 0;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 400px;
+    border: var(--border-prop);
+}
+
+.header {
+    border: var(--border-prop);
+    font-family: Arial;
+    font-size: 25px;
+    color: white;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.datasec {
+    border: var(--border-prop);
+    font-family: Arial;
+    font-size: 15px;
+    color: white;
+}
+
+.buttons-container {
+    border: var(--main-col);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.button {
+    display: inline-block;
+    border-radius: 0;
+    background-color: #303030;
+    border: none;
+    /*text*/
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1.75em;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.button span{
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 1s;
+}
+
+.button span::after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: .5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span::after{
+    opacity: 1;
+    right: 0;
+}
+
+#loginText {
+    transition: 0.35s;
+}
+
+.fadeout {
+    opacity: 0;
+}
+
+#loginform {
+    border: var(--border-prop);
+    margin-bottom: 10px;
+}

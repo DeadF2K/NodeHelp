@@ -1,0 +1,4 @@
+#!/bin/sh
+node .\server.js &
+firefox --kiosk http://localhost:8080/info &
+exit

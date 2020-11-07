@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>Login</title>
+    <link rel="stylesheet" text="text/css" href="styles.css">
+    <script src="login.js"></script>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <div class="header">
+                <h1>Login</h1>
+            </div>
+            <form name="login" method="post" id="loginform">
+                <div class="datasec">           
+                    <input class="username" type="text" name="username" id="un" required placeholder="Username" autocomplete="off">
+                </div>
+                <div class="datasec">
+                    <input class="password" type="password" name="password" id="pw" required placeholder="Password">
+                </div>
+                <div class="buttons-container">
+                    <button class="button"
+                            type="submit" 
+                            name="submit">
+                        <span id="loginText">Log In</span>
+                    </button>
+                </div>
+            </form>
+            <button class="button" id="prev">
+                <span>Preview</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
