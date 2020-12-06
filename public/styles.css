@@ -1,6 +1,6 @@
 :root {
     --border-prop: 0px solid #F2F;
-
+    --header-height: 10%
 }
 
 html, body {
@@ -8,12 +8,26 @@ html, body {
     height: 100%;
     background: #222;
     margin: 0;
+    /*background-image: url("img/logo_v1.svg");*/
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
+header{
+    height: var(--header-height);
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+/*text*/
 h1 {
     font-size: 3em;
     padding: 0px;
     margin: 0px;
+    font-family: Arial;
+    color: white;
 }
 
 input {
@@ -23,7 +37,7 @@ input {
     color: white;
     padding: 0;
     padding-bottom: 5px;
-    background: #222;
+    background: none;
     border: none;
     border-bottom: 1px solid #ffffff;
     margin-bottom: 15px;
@@ -49,9 +63,7 @@ input:focus {
 
 .header {
     border: var(--border-prop);
-    font-family: Arial;
     font-size: 25px;
-    color: white;
     text-align: center;
     margin-bottom: 25px;
 }
@@ -64,7 +76,7 @@ input:focus {
 }
 
 .buttons-container {
-    border: var(--main-col);
+    border: var(--border-prop);
     display: flex;
     justify-content: center;
     width: 100%;
@@ -82,6 +94,7 @@ input:focus {
     padding: 10px;
     width: 100%;
     cursor: pointer;
+    
 }
 
 .button span{

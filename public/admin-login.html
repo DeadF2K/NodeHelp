@@ -3,10 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Info</title>
+    <title>Admin-Page</title>
+    <link rel="stylesheet" text="text/css" href="adminStyle.css">
+    <script src="admin.js"></script>
 </head>
 <body>
-    <h1>Allmannsohn</h1>
-    <a href="/logout">Logout</a>
+    <div class=body>
+        <div class="container">
+            <div class="header">
+                <h1>Adminseite</h1>
+            </div>
+            <div class="btn">
+                <button data-popup-target="#addPopup" id="addBtn">&plus;</button>
+                <div class="popup" id="addPopup">
+                    <div class="popup-header">
+                        <div class="title">Registration Form</div>
+                        <button data-close-btn class="close-btn">&times;</button>
+                    </div>
+                    <div class="popup-body">
+                        <form class="" id="formNewUser" method="POST">
+                            <div class="regSection">
+                                <input type="email" id="email" required placeholder="e-Mail">
+                            </div>
+                            <div class="regSection">
+                                <input type="text" id="username" required placeholder="Username">
+                            </div>
+                            <div class="btn">
+                                <button type="submit" value="Create" id="submit">
+                                    <span>Submit</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="" id="overlay"></div>
+            </div>
+            <div class="table" id="table">
+            </div>
+            <div class="pageSelect">
+                <button class="img-btn" id="pageDown"></button>
+                <button class="img-btn" id="pageUp"></button>
+            </div>
+        </div>
+        <!--<a href="/logout">Logout</a>-->
+    </div>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "name": "NodeHelp",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "nedb-session-store": "^1.1.2"
+  },
+  "devDependencies": {
+    "bcrypt": "^5.0.0",
+    "express-session": "^1.17.1"
+  }
+}
