@@ -78,8 +78,10 @@ document.addEventListener("DOMContentLoaded", function(){
                     <h2>${element.username}</h2>
                 </div>
                 <div class="col-right">
-                    <button class="${status} susButton" data-username="${element.username}"></button></button>
-                    <button class="remButton" data-username="${element.username}"></button>
+                    <button class="${status} susButton" data-username="${element.username}"></button>
+                    <button class="remButton" data-username="${element.username}">
+                        <i class="icon-trash"></i>
+                    </button>
                 </div>
             `
             container.appendChild(row)
