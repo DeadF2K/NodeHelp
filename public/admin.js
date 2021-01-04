@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(){
             var email = document.getElementById("email").value;
             var username = document.getElementById("username").value;
             var bodyContent = {email:email, username:username};
-            var response = await fetch("/newuser", {
+            var response = await fetch("/newmod", {
                 method: "POST",
                 headers: {
                     "Accept":"application/json",
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function(){
             });
             var data = await response.json();
             console.log(data);
-            loadUsers();
+            loadMods();
         }
         register();
     });
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(){
     pageUp.addEventListener("click", () => {
         if(maxPages > currentPage+1) {
             currentPage++;
-            loadUsers();
+            loadMods();
         }
     });
 
@@ -38,15 +38,21 @@ document.addEventListener("DOMContentLoaded", function(){
         if(currentPage > 0){
             currentPage--;
             
-            loadUsers();
+            loadMods();
         }
+    });
+
+    /*logout*/
+    var lgoBtn = document.getElementById("lgoBtn");
+    lgoBtn.addEventListener("click", () => {
+        window.location = "/logout";
     });
 
     var maxPages;
     var currentPage = 0;
     var maxDisplayed = 8;
-    async function loadUsers(){
-        var response = await fetch("/getusers", {
+    async function loadMods(){
+        var response = await fetch("/getmods", {
             method: "GET",
             headers: {
                 "Accept":"application/json",
@@ -59,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function(){
         maxPages = data.users.length / 8;
         console.log(maxPages, currentPage+1)
     };
-    loadUsers();
+    loadMods();
 
     function showUsers(pdata){
         document.getElementById("table").innerHTML = "";        //empty table
@@ -67,10 +73,13 @@ document.addEventListener("DOMContentLoaded", function(){
         pdata.forEach(element => {
             var row = document.createElement("div");
             var status;
+            var susbuttonstate;
             if(element.suspended) {
                 status = "suspended"
+                susbuttonstate = "icon-pause"
             } else {
                 status = "notSuspended"
+                susbuttonstate = "icon-play"
             }
             row.classList.add("row");
             row.innerHTML = `
@@ -78,9 +87,11 @@ document.addEventListener("DOMContentLoaded", function(){
                     <h2>${element.username}</h2>
                 </div>
                 <div class="col-right">
-                    <button class="${status} susButton" data-username="${element.username}"></button>
+                    <button class="${status} susButton" data-username="${element.username}">
+                    <i class="${susbuttonstate} , icon"></i>
+                    </button>
                     <button class="remButton" data-username="${element.username}">
-                        <i class="icon-trash"></i>
+                        <i class="icon-trash , icon"></i>
                     </button>
                 </div>
             `
@@ -100,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function(){
             var data = await response.json();
             console.log(data);
             if(data.suc || !data.suc){
-                loadUsers();
+                loadMods();
             }
     };
 

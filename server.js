@@ -34,11 +34,31 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
+app.get("/newPost", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "user"){
+        console.log(req.session.userRole);
+        res.sendFile(__dirname + '/public/new-Post.html')
+    } else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
+
 //cookie monster
 app.get("/admin-login", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
         console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/admin-login.html')
+    } else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
+
+app.get("/mod-login", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+        console.log(req.session.userRole);
+        res.sendFile(__dirname + '/public/mod-login.html')
     } else {
         req.session = null;
         res.redirect("/");
@@ -73,9 +93,12 @@ app.post("/login", (req, res) => {
                 bcrypt.compare(pw, docs[0].password, (err, result) => {
                     if(result){                                                 //logged in?
                         req.session.userRole = userRole;
+                        req.session.userid = docs[0]._id;
                         req.session.isLoggedIn = true;
                         if(userRole === "admin") {
                             res.json({suc:true, redirect:"admin"})              //login to admin page
+                        } else if(userRole === "mod"){
+                            res.json({suc:true, redirect:"mod"})               //login to mod page
                         } else {
                             res.json({suc:true, redirect:"user"})               //login to user page
                         }
@@ -86,8 +109,8 @@ app.post("/login", (req, res) => {
     } else { res.json({suc:false}); }
 });
 
-/*create new users*/
-app.post("/newuser", (req, res) => {
+/*create new mod*/
+app.post("/newmod", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
         console.log(req.body);
         const nun = req.body.username;
@@ -101,7 +124,63 @@ app.post("/newuser", (req, res) => {
                         bcrypt.hash(nun, 10, (err, hash) => {
                             console.log(err);
                             console.log(hash);
-                            db.insert({email: nemail, username: nun, password: hash, role: "user", suspended: false}, (err, doc) => {
+                            db.insert({email: nemail, username: nun, password: hash, role: "mod", suspended: false}, (err, doc) => {
+                                res.json({suc:true});
+                            });
+                        });
+                    } else {
+                        res.json({suc:false});
+                    }            
+                });
+            } else {
+                res.json({suc:false});
+            }   
+        });
+    } else {
+        res.json({suc:false});
+    }
+})
+
+app.get("/getmods", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "admin"){
+        const db = new Datastore("db/users.db");
+        db.loadDatabase();
+        db.find({role:"mod"}, (err, docs) => {
+            if(docs.length > 0) {
+                let resArray = [];
+                docs.forEach(element => {
+                    resArray.push({
+                        username:element.username, 
+                        suspended:element.suspended
+                    })
+                });
+                res.json({suc:true, users:resArray})
+            } else {
+                res.json({suc:false});
+            }
+
+        })
+    } else {
+        res.json({suc:false});
+    }
+});
+
+/*create new users*/
+app.post("/newuser", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+        console.log(req.body);
+        const nun = req.body.username;
+        const nemail = req.body.email;
+        const db = new Datastore("db/users.db");
+        db.loadDatabase();
+        db.find({username:nun}, (err, docs) => {
+            if(docs.length === 0){
+                db.find({email:nemail}, (err, docs) => {
+                    if(docs.length === 0){
+                        bcrypt.hash(nun, 10, (err, hash) => {
+                            console.log(err);
+                            console.log(hash);
+                            db.insert({email: nemail, username: nun, password: hash, role: "user", group: req.session.userid, suspended: false}, (err, doc) => {
                                 res.json({suc:true});
                             });
                         });
@@ -119,10 +198,10 @@ app.post("/newuser", (req, res) => {
 })
 
 app.get("/getusers", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "admin"){
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
         const db = new Datastore("db/users.db");
         db.loadDatabase();
-        db.find({role:"user"}, (err, docs) => {
+        db.find({role:"user" , group: req.session.userid }, (err, docs) => {
             if(docs.length > 0) {
                 let resArray = [];
                 docs.forEach(element => {

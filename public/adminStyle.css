@@ -237,7 +237,15 @@ input:focus {
 .susButton, .remButton {
 }
 
-.remButton, .susButton{
+.backButton{
+    margin-right: 5px;
+}
+
+.nextButton{
+    margin-left: 5px;
+}
+
+.remButton, .susButton , .backButton , .nextButton{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -272,6 +280,10 @@ input:focus {
 
 .img-btn{
     opacity: 1;
+}
+
+.logoutButton{
+    height: 30px;
 }
 
 .icon{

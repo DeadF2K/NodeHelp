@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 case "admin": 
                     window.location = "/admin-login"
                     break;
+                case "mod":
+                    window.location = "/mod-login"
+                    break;
                 case "user":
                     window.location = "/user-login"
                     break;
