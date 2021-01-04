@@ -1,28 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(){
-    var form = document.getElementById("formNewUser");
-    form.addEventListener("submit", function(e){
-        e.preventDefault();
-        console.log("Sending Formular")
-        async function register(){
-            var email = document.getElementById("email").value;
-            var username = document.getElementById("username").value;
-            var bodyContent = {email:email, username:username};
-            var response = await fetch("/newuser", {
-                method: "POST",
-                headers: {
-                    "Accept":"application/json",
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify(bodyContent)
-            });
-            var data = await response.json();
-            console.log(data);
-            loadUsers();
-        }
-        register();
-    });
-
-
+document.addEventListener("DOMContentLoaded", function(){    
     /*changin page*/
     var pageUp = document.getElementById("pageUp");
     var pageDown = document.getElementById("pageDown");
