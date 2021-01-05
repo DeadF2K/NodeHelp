@@ -48,6 +48,11 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "/logout";
     });
 
+    var mngBtn = document.getElementById("mngBtn");
+    mngBtn.addEventListener("click", () => {
+        window.location = "/mod-manage-posts";
+    });
+
     var maxPages;
     var currentPage = 0;
     var maxDisplayed = 8;

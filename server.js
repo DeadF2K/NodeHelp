@@ -75,6 +75,17 @@ app.get("/user-login", (req, res) => {
     }
 });
 
+
+app.get("/mod-manage-posts", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+        console.log(req.session.userRole);
+        res.sendFile(__dirname + '/public/mod-manage-post.html')
+    } else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
+
 app.get("/info", (req, res) => {
     res.sendFile(__dirname + '/public/info-page.html')
 });
@@ -94,6 +105,8 @@ app.post("/login", (req, res) => {
                     if(result){                                                 //logged in?
                         req.session.userRole = userRole;
                         req.session.userid = docs[0]._id;
+                        req.session.gr = docs[0].group;
+                        req.session.un = docs[0].username;
                         req.session.isLoggedIn = true;
                         if(userRole === "admin") {
                             res.json({suc:true, redirect:"admin"})              //login to admin page
@@ -221,8 +234,82 @@ app.get("/getusers", (req, res) => {
     }
 });
 
+/*Create new Post*/
+app.post("/newpost", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "user"){
+        console.log(req.body);
+        const db = new Datastore("db/posts.db");
+        db.loadDatabase();
+        db.insert({
+            creatorId:req.session.userid ,
+            creatorName:req.session.un ,
+            creatorGroup:req.session.gr ,
+            showpost:false ,
+            startDate:req.body.startDate ,
+            endDate:req.body.endDate ,
+            title:req.body.title ,
+            text:req.body.text 
+        }, (err, doc) => {
+            res.json({suc:true});
+        });
+    }
+});
+
+app.get("/getposts", (req, res) => {
+    if(req.session.isLoggedIn){
+        switch(req.session.userRole)
+        {
+            case "admin":
+
+            break;
+            case "mod":
+                const db_post = new Datastore("db/posts.db");
+                db_post.loadDatabase();
+                db_post.find({creatorGroup:req.session.userid}, (err, docs) => {
+                    if(docs.length > 0) {
+                        let resArray = [];
+                        docs.forEach(element => {
+                            resArray.push({
+                                creator: element.creatorName,
+                                postid: element._id,
+                                title:element.title,
+                                text:element.text,
+                                showpost:element.showpost,
+                                startDate:element.startDate,
+                                endDate:element.endDate,
+                            })
+                        });
+                        res.json({suc:true, users:resArray})
+                    } else {
+                        res.json({suc:false});
+                    }
+                });
+                
+                break;
+            case "user":
+                const db = new Datastore("db/posts.db");
+                db.loadDatabase();
+                db.find({creatorId:req.session.userid}, (err, docs) => {
+                    if(docs.length > 0) {
+                        let resArray = [];
+                            docs.forEach(element => {
+                            resArray.push({
+                                title:element.title,
+                                showpost:element.showpost,
+                                postid:element._id
+                            })
+                        });
+                        res.json({suc:true, users:resArray})
+                    } else {
+                        res.json({suc:false});
+                    }});
+                break;
+        }
+    }
+});
+
 app.post("/toggleSus", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "admin"){
+    if(req.session.isLoggedIn && (req.session.userRole === "admin" || req.session.userRole === "mod")){
         const db = new Datastore("db/users.db");
         db.loadDatabase();
         db.find({username:req.body.username}, (err, docs) => { 
@@ -235,6 +322,26 @@ app.post("/toggleSus", (req, res) => {
                 res.json({suc:false});
             }
 
+        })
+    } else {
+        res.json({suc:false});
+    }
+});
+
+app.post("/toggleShow", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+        const db = new Datastore("db/posts.db");
+        db.loadDatabase();
+
+        db.find({_id:req.body.postid}, (err, docs) => { 
+            if(docs.length === 1) {
+                var now = !docs[0].showpost;
+                db.update({_id: docs[0]._id}, {$set: {showpost: now}}, (err, num) =>{
+                    res.json({suc:true});  
+                })
+            } else {
+                res.json({suc:false});
+            }
         })
     } else {
         res.json({suc:false});

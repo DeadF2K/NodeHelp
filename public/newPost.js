@@ -12,9 +12,6 @@ document.addEventListener("DOMContentLoaded", function(){
         register();
     });
 
-    /*changin page*/
-    var pageUp = document.getElementById("pageUp");
-    var pageDown = document.getElementById("pageDown");
     var title = new Array();
     var text = new Array();
     var startDate;
@@ -22,10 +19,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
     document.getElementById("pageUp").onclick = function(){
         if(maxPages > currentPage+1) {
-            
             save();
             currentPage++;
             loadWorkspace();
+        }
+        else if(maxPages = currentPage+1) {
+            save();
+            window.location = "/user-login";
         }
     }
     document.getElementById("pageDown").onclick = function(){
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
-    function save(){
+    async function save(){
         switch(currentPage)
         {
             case 0:
@@ -49,7 +49,18 @@ document.addEventListener("DOMContentLoaded", function(){
                 endDate = document.getElementById("endDate").value;
                 break;
             case 2:
-                
+                var bodyContent = {title:title, text:text, startDate:startDate, endDate:endDate};
+                console.log(bodyContent);
+                var response = await fetch("/newpost", {
+                method: "POST",
+                headers: {
+                    "Accept":"application/json",
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(bodyContent)
+                });
+                var data = await response.json();
+                console.log(data);
                 break;
         }
     };
@@ -115,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function(){
         var content = document.createElement("div");
         content.classList.add("content");
         content.innerHTML = `
-        <div class="datePreview">${startDate}  -  ${endDate}</div>
+        <div class="datePreview">${startDate}  bis  ${endDate}</div>
         <div id="postPreview">
         <h1>${title}</h1>
         <a>${text}</a>

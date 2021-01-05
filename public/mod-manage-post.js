@@ -23,12 +23,35 @@ document.addEventListener("DOMContentLoaded", function(){
     lgoBtn.addEventListener("click", () => {
         window.location = "/logout";
     });
-
-    /*NewPost*/
-    var addBtn = document.getElementById("addBtn");
-    addBtn.addEventListener("click", () => {
-        window.location = "/newPost";
+    
+    var mngBtn = document.getElementById("mngBtn");
+    mngBtn.addEventListener("click", () => {
+        window.location = "/mod-login";
     });
+
+    async function toggleSus(postid){
+        var response = await fetch("/toggleShow", {
+            method: "POST",
+            headers: {
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({postid:postid})
+        })
+        var data = await response.json();
+        console.log(data);
+        if(data.suc || !data.suc){
+            loadPosts();
+        }
+    };
+
+
+    document.addEventListener("click", function(e){
+        if(e.target && e.target.classList.contains("susButton")){
+            var postid = e.target.getAttribute("data-username");
+            toggleSus(postid);
+        }
+    })
 
     /*Show Elements*/
     var maxPages;
@@ -56,10 +79,13 @@ document.addEventListener("DOMContentLoaded", function(){
         pdata.forEach(element => {
             var row = document.createElement("div");
             var status;
+            var susbuttonstate;
             if(!element.showpost) {
                 status = "hidden"
+                susbuttonstate = "icon-pause"
             } else {
                 status = "shown"
+                susbuttonstate = "icon-play"
             }
             row.classList.add("row");
             row.innerHTML = `
@@ -67,7 +93,8 @@ document.addEventListener("DOMContentLoaded", function(){
                     <h2>${element.title}</h2>
                 </div>
                 <div class="col-right">
-                    <button class="${status} susButton">
+                    <button class="${status} susButton" data-username="${element.postid}">
+                    <i class="${susbuttonstate} , icon"></i>
                     </button>
                     <button class="remButton" data-username="${element.postid}">
                         <i class="icon-trash , icon"></i>

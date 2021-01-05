@@ -60,14 +60,14 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         })
         var data = await response.json();
-        showUsers(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
+        showMods(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         console.log(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         maxPages = data.users.length / 8;
         console.log(maxPages, currentPage+1)
     };
     loadMods();
 
-    function showUsers(pdata){
+    function showMods(pdata){
         document.getElementById("table").innerHTML = "";        //empty table
         var container = document.getElementById("table");       //insert in table
         pdata.forEach(element => {
