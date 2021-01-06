@@ -422,35 +422,34 @@ app.post("/deleteMod", (req, res) => {
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
                 modid = docs[0]._id;
-                //res.json({suc:"getting there"});
-            } else {
-                res.json({suc:false});
-            }
-        })
-        db.find({group:modid}, (err, docs) => { 
-            if(docs.length > 0) {
-                forEach(element => {
-                    db.remove({_id: docs[0]._id}, (err, num) =>{
-                        //res.json({suc:"almost there"});
-                    })
-                });
-            } else {
-                res.json({suc:false});
-            }
-        })
-        db.find({username:req.body.username}, (err, docs) => { 
-            if(docs.length === 1) {
-                db.remove({_id: docs[0]._id}, (err, num) =>{
-                    res.json({suc:true});
+                db.find({group:modid}, (err, docs) => { 
+                    if(docs.length > 0) {
+                        docs.forEach(element => {
+                            db.remove({_id: element._id}, (err, num) =>{})
+                        });
+                    }
+                })
+                db.find({username:req.body.username}, (err, docs) => { 
+                    if(docs.length === 1) {
+                        db.remove({_id: docs[0]._id}, (err, num) =>{
+                            res.json({suc:true});
+                        })
+                    } else {
+                        res.json({suc:false});
+                    }
                 })
             } else {
                 res.json({suc:false});
             }
         })
+        
+        
     } else {
         res.json({suc:false});
     }
 });
+
+
 
 app.listen(8080, () => {
     console.log("Sever online on port 8080.");
