@@ -57,37 +57,6 @@ app.get("/manage-posts", (req, res) => {
     }
 });
 
-//cookie monster
-/* Admin Landing Page */ // DEL
-app.get("/admin-login", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "admin"){
-        res.sendFile(__dirname + '/public/admin-login.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
-/* Mod Landing Page */ // DEL
-app.get("/mod-login", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "mod"){
-        res.sendFile(__dirname + '/public/mod-login.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
-/* User Landing Page */ // DEL
-app.get("/user-login", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "user"){
-        res.sendFile(__dirname + '/public/user-login.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
 /* Back to Admin/Mod/User Landing Page */
 app.get("/main", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
