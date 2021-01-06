@@ -18,19 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log("Data: ");
         console.log(data);
         if(data.suc){
-            switch(data.redirect) {
-                case "admin": 
-                    window.location = "/main"
-                    break;
-                case "mod":
-                    window.location = "/main"
-                    break;
-                case "user":
-                    window.location = "/main"
-                    break;
-                default:
-                    break;
-            }
+            window.location = "/main"
         } else {
             var loginText = document.getElementById("loginText");
             var inputs = document.getElementsByTagName("input")

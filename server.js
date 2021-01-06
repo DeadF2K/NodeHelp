@@ -6,7 +6,9 @@ const Datastore = require("nedb");
 const session = require("express-session");
 const NedbSessionStore = require("nedb-session-store")(session);
 
-
+app.listen(8080, () => {
+    console.log("Who da fuq woke me up!? port 8080");
+})
 
 app.use(session({
     secret: process.env.SECRET || 'ENTER YOUR SECRET KEY IN ENV VARIABLES!',
@@ -16,7 +18,7 @@ app.use(session({
     cookie: {
         path: '/',
         httpOnly: true,
-        maxAge: 3600000  /*cookie time in ms*/
+        maxAge: 3600000 //cookie time in ms (=1h)
     },
     store: new NedbSessionStore({
         filename: 'db/sessions.db'
@@ -28,38 +30,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-/* Landing Page Call */
+
+/*--------------------------------------------------PAGE REQUESTS--------------------------------------------------*/
+
 app.get("/", (req, res) => {
     res.send("index.html");
 });
 
-/* Logout Call */
-app.get("/logout", (req, res) => {
-    req.session = null;
-    res.redirect("/");
+app.get("/info", (req, res) => {
+    res.sendFile(__dirname + '/public/info-page.html')
 });
 
-/* New Post Page Call */
-app.get("/newPost", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "user"){
-        res.sendFile(__dirname + '/public/new-Post.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
-/* Manage Posts Page Call */
-app.get("/manage-posts", (req, res) => {
-    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
-        res.sendFile(__dirname + '/public/manage-post.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
-/* Back to Admin/Mod/User Landing Page */
 app.get("/main", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
         res.sendFile(__dirname + '/public/admin-login.html')
@@ -73,70 +54,27 @@ app.get("/main", (req, res) => {
     }
 });
 
-/* Noticeboard Page Call */
-app.get("/info", (req, res) => {
-    res.sendFile(__dirname + '/public/info-page.html')
-});
-
-/* Login/Credentials check and Redirect */
-app.post("/login", (req, res) => {
-    const db = new Datastore("db/users.db");
-    db.loadDatabase();
-    const un = req.body.username;
-    const pw = req.body.password;
-    if(un && pw){
-        db.find({username:un}, (err, docs) => {
-            if(docs.length === 1){
-                const userRole =  docs[0].role;
-                bcrypt.compare(pw, docs[0].password, (err, result) => {
-                    if(result){                                                 //logged in?
-                        req.session.userRole = userRole;
-                        req.session.userid = docs[0]._id;
-                        req.session.gr = docs[0].group;
-                        req.session.un = docs[0].username;
-                        req.session.isLoggedIn = true;
-                        if(userRole === "admin") {
-                            res.json({suc:true, redirect:"admin"})              //login to admin page
-                        } else if(userRole === "mod"){
-                            res.json({suc:true, redirect:"mod"})               //login to mod page
-                        } else if(userRole === "user"){
-                            res.json({suc:true, redirect:"user"})               //login to user page
-                        }
-                    } else { res.json({suc:false}); }
-                })
-            } else { res.json({suc:false}); }
-        })
-    } else { res.json({suc:false}); }
-});
-
-/*create new mod*/
-app.post("/newmod", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "admin"){
-        const nun = req.body.username;
-        const nemail = req.body.email;
-        const db = new Datastore("db/users.db");
-        db.loadDatabase();
-        db.find({username:nun}, (err, docs) => {
-            if(docs.length === 0){
-                db.find({email:nemail}, (err, docs) => {
-                    if(docs.length === 0){
-                        bcrypt.hash(nun, 10, (err, hash) => {
-                            db.insert({email: nemail, username: nun, password: hash, role: "mod", suspended: false}, (err, doc) => {
-                                res.json({suc:true});
-                            });
-                        });
-                    } else {
-                        res.json({suc:false});
-                    }            
-                });
-            } else {
-                res.json({suc:false});
-            }   
-        });
+app.get("/newPost", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "user"){
+        res.sendFile(__dirname + '/public/new-Post.html')
     } else {
-        res.json({suc:false});
+        req.session = null;
+        res.redirect("/");
     }
-})
+});
+
+app.get("/manage-posts", (req, res) => {
+    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+        res.sendFile(__dirname + '/public/manage-post.html')
+    } else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
+
+
+
+/*--------------------------------------------------GETTER FUNCTIONS--------------------------------------------------*/
 
 app.get("/getmods", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
@@ -162,35 +100,6 @@ app.get("/getmods", (req, res) => {
     }
 });
 
-/*create new users*/
-app.post("/newuser", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "mod"){
-        const nun = req.body.username;
-        const nemail = req.body.email;
-        const db = new Datastore("db/users.db");
-        db.loadDatabase();
-        db.find({username:nun}, (err, docs) => {
-            if(docs.length === 0){
-                db.find({email:nemail}, (err, docs) => {
-                    if(docs.length === 0){
-                        bcrypt.hash(nun, 10, (err, hash) => {
-                            db.insert({email: nemail, username: nun, password: hash, role: "user", group: req.session.userid, suspended: false}, (err, doc) => {
-                                res.json({suc:true});
-                            });
-                        });
-                    } else {
-                        res.json({suc:false});
-                    }            
-                });
-            } else {
-                res.json({suc:false});
-            }   
-        });
-    } else {
-        res.json({suc:false});
-    }
-})
-
 app.get("/getusers", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "mod"){
         const db = new Datastore("db/users.db");
@@ -212,26 +121,6 @@ app.get("/getusers", (req, res) => {
         })
     } else {
         res.json({suc:false});
-    }
-});
-
-/*Create new Post*/
-app.post("/newpost", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "user"){
-        const db = new Datastore("db/posts.db");
-        db.loadDatabase();
-        db.insert({
-            creatorId:req.session.userid ,
-            creatorName:req.session.un ,
-            creatorGroup:req.session.gr ,
-            showpost:false ,
-            startDate:req.body.startDate ,
-            endDate:req.body.endDate ,
-            title:req.body.title ,
-            text:req.body.text 
-        }, (err, doc) => {
-            res.json({suc:true});
-        });
     }
 });
 
@@ -303,7 +192,132 @@ app.get("/getposts", (req, res) => {
     }
 });
 
-/* Toggle The Suspended State of a User/Mod */
+
+
+/*--------------------------------------------------FUNCTIONS--------------------------------------------------*/
+
+app.post("/login", (req, res) => {
+    const db = new Datastore("db/users.db");
+    db.loadDatabase();
+    const un = req.body.username;
+    const pw = req.body.password;
+    if(un && pw){
+        db.find({username:un}, (err, docs) => {
+            if(docs.length === 1){
+                const userRole =  docs[0].role;
+                bcrypt.compare(pw, docs[0].password, (err, result) => {
+                    if(result){                                                 
+                        req.session.userRole = userRole;
+                        req.session.userid = docs[0]._id;
+                        req.session.gr = docs[0].group;
+                        req.session.un = docs[0].username;
+                        req.session.isLoggedIn = true;
+                        if(userRole === "admin") {
+                            res.json({suc:true, redirect:"admin"})  //login to admin page
+                        } else if(userRole === "mod"){
+                            res.json({suc:true, redirect:"mod"})    //login to mod page
+                        } else if(userRole === "user"){
+                            res.json({suc:true, redirect:"user"})   //login to user page
+                        }
+                    } else { res.json({suc:false}); }
+                })
+            } else { res.json({suc:false}); }
+        })
+    } else { res.json({suc:false}); }
+});
+
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+});
+
+app.post("/newmod", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "admin"){
+        const nun = req.body.username;
+        const nemail = req.body.email;
+        const db = new Datastore("db/users.db");
+        db.loadDatabase();
+        db.find({username:nun}, (err, docs) => {
+            if(docs.length === 0){
+                db.find({email:nemail}, (err, docs) => {
+                    if(docs.length === 0){
+                        bcrypt.hash(nun, 10, (err, hash) => {
+                            db.insert({email: nemail, 
+                                username: nun,
+                                password: hash, 
+                                role: "mod", 
+                                suspended: false
+                            }, (err, doc) => {
+                                res.json({suc:true});
+                            });
+                        });
+                    } else {
+                        res.json({suc:false});
+                    }            
+                });
+            } else {
+                res.json({suc:false});
+            }   
+        });
+    } else {
+        res.json({suc:false});
+    }
+})
+
+app.post("/newuser", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+        const nun = req.body.username;
+        const nemail = req.body.email;
+        const db = new Datastore("db/users.db");
+        db.loadDatabase();
+        db.find({username:nun}, (err, docs) => {
+            if(docs.length === 0){
+                db.find({email:nemail}, (err, docs) => {
+                    if(docs.length === 0){
+                        bcrypt.hash(nun, 10, (err, hash) => {
+                            db.insert({
+                                email: nemail, 
+                                username: nun, 
+                                password: hash, 
+                                role: "user", 
+                                group: req.session.userid, 
+                                suspended: false
+                            }, (err, doc) => {
+                                res.json({suc:true});
+                            });
+                        });
+                    } else {
+                        res.json({suc:false});
+                    }            
+                });
+            } else {
+                res.json({suc:false});
+            }   
+        });
+    } else {
+        res.json({suc:false});
+    }
+})
+
+app.post("/newpost", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "user"){
+        const db = new Datastore("db/posts.db");
+        db.loadDatabase();
+        db.insert({
+            creatorId:req.session.userid ,
+            creatorName:req.session.un ,
+            creatorGroup:req.session.gr ,
+            showpost:false ,
+            startDate:req.body.startDate ,
+            endDate:req.body.endDate ,
+            title:req.body.title ,
+            text:req.body.text 
+        }, (err, doc) => {
+            res.json({suc:true});
+        });
+    }
+});
+
 app.post("/toggleSus", (req, res) => {
     if(req.session.isLoggedIn && (req.session.userRole === "admin" || req.session.userRole === "mod")){
         const db = new Datastore("db/users.db");
@@ -324,7 +338,6 @@ app.post("/toggleSus", (req, res) => {
     }
 });
 
-/* Toggle the Showing Post state */
 app.post("/toggleShow", (req, res) => {
     if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
         const db = new Datastore("db/posts.db");
@@ -344,18 +357,18 @@ app.post("/toggleShow", (req, res) => {
     }
 });
 
-app.post("/deletePost", (req, res) => {
-    if(req.session.isLoggedIn){
-        const db = new Datastore("db/posts.db");
+app.post("/deleteMod", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "admin") {
+        const db = new Datastore("db/users.db");
         db.loadDatabase();
-        db.find({_id:req.body.postid}, (err, docs) => { 
+        db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
-                deletePost(docs[0]._id);
-                setTimeout(function(){ res.json({suc:true}); }, 100);    //resolve timing issue
+                deleteMod(docs[0]._id);
+                setTimeout(function(){ res.json({suc:true}); }, 100);   //delay to resolve timing issue
             } else {
                 res.json({suc:false});
             }
-        })
+        })  
     } else {
         res.json({suc:false});
     }
@@ -368,7 +381,7 @@ app.post("/deleteUser", (req, res) => {
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
                 deleteUser(docs[0]._id);
-                setTimeout(function(){ res.json({suc:true}); }, 100);    //resolve timing issue
+                setTimeout(function(){ res.json({suc:true}); }, 100);   //delay to resolve timing issue
             } else {
                 res.json({suc:false});
             }
@@ -378,18 +391,18 @@ app.post("/deleteUser", (req, res) => {
     }
 });
 
-app.post("/deleteMod", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "admin") {
-        const db = new Datastore("db/users.db");
+app.post("/deletePost", (req, res) => {
+    if(req.session.isLoggedIn){
+        const db = new Datastore("db/posts.db");
         db.loadDatabase();
-        db.find({username:req.body.username}, (err, docs) => { 
+        db.find({_id:req.body.postid}, (err, docs) => { 
             if(docs.length === 1) {
-                deleteMod(docs[0]._id);
-                setTimeout(function(){ res.json({suc:true}); }, 100);    //resolve timing issue
+                deletePost(docs[0]._id);
+                setTimeout(function(){ res.json({suc:true}); }, 100);   //delay to resolve timing issue
             } else {
                 res.json({suc:false});
             }
-        })  
+        })
     } else {
         res.json({suc:false});
     }
@@ -397,26 +410,27 @@ app.post("/deleteMod", (req, res) => {
 
 
 
+/*--------------------------------------------------FUNCTIONS--------------------------------------------------*/
 
 function deleteMod(modID){
     const db_user = new Datastore("db/users.db");
-    db_user.loadDatabase();
-    db_user.find({group:modID}, (err, docs) => {
+    db_users.loadDatabase();
+    db_users.find({group:modID}, (err, docs) => {
         docs.forEach(element => {
             deleteUser(element._id);
             if(docs.indexOf(element) === docs.length-1)
-                db_user.find({_id:modID}, (err, docs) => {
+                db_users.find({_id:modID}, (err, docs) => {
                     console.log("deleted mod: ", docs[0]._id);
-                    db_user.remove({_id: docs[0]._id});
+                    db_users.remove({_id: docs[0]._id});
                 })
         });
     })
 }
 
 function deleteUser(userID){
-    const db_post = new Datastore("db/posts.db");
-    db_post.loadDatabase();
-    db_post.find({creatorId:userID}, (err, docs) => {
+    const db_posts = new Datastore("db/posts.db");
+    db_posts.loadDatabase();
+    db_posts.find({creatorId:userID}, (err, docs) => {
         docs.forEach(element => {
             deletePost(element._id);
         });
@@ -431,14 +445,10 @@ function deleteUser(userID){
 }
 
 function deletePost(postID){
-    const db_post = new Datastore("db/posts.db");
-    db_post.loadDatabase();
-    db_post.find({_id:postID}, (err, docs) => {
+    const db_posts = new Datastore("db/posts.db");
+    db_posts.loadDatabase();
+    db_posts.find({_id:postID}, (err, docs) => {
         console.log("deleted post: ", docs[0]._id);
-        db_post.remove({_id: docs[0]._id});
+        db_posts.remove({_id: docs[0]._id});
     })
 }
-
-app.listen(8080, () => {
-    console.log("Who da fuq woke me up!? port 8080");
-})
