@@ -6,6 +6,8 @@ const Datastore = require("nedb");
 const session = require("express-session");
 const NedbSessionStore = require("nedb-session-store")(session);
 
+
+
 app.use(session({
     secret: process.env.SECRET || 'ENTER YOUR SECRET KEY IN ENV VARIABLES!',
     resave: false,
@@ -367,9 +369,8 @@ app.post("/deletePost", (req, res) => {
         db.loadDatabase();
         db.find({_id:req.body.postid}, (err, docs) => { 
             if(docs.length === 1) {
-                db.remove({_id: docs[0]._id}, (err, num) =>{
-                    res.json({suc:true});
-                })
+                deletePost(docs[0]._id);
+                setTimeout(function(){ res.json({suc:true}); }, 100);    //resolve timing issue
             } else {
                 res.json({suc:false});
             }
@@ -385,9 +386,8 @@ app.post("/deleteUser", (req, res) => {
         db.loadDatabase();
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
-                db.remove({_id: docs[0]._id}, (err, num) =>{
-                    res.json({suc:true});
-                })
+                deleteUser(docs[0]._id);
+                setTimeout(function(){ res.json({suc:true}); }, 100);    //resolve timing issue
             } else {
                 res.json({suc:false});
             }
@@ -398,41 +398,65 @@ app.post("/deleteUser", (req, res) => {
 });
 
 app.post("/deleteMod", (req, res) => {
-    var modid;
-    if(req.session.isLoggedIn && req.session.userRole === "admin"){
+    if(req.session.isLoggedIn && req.session.userRole === "admin") {
         const db = new Datastore("db/users.db");
         db.loadDatabase();
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
-                modid = docs[0]._id;
-                db.find({group:modid}, (err, docs) => { 
-                    if(docs.length > 0) {
-                        docs.forEach(element => {
-                            db.remove({_id: element._id}, (err, num) =>{})
-                        });
-                    }
-                })
-                db.find({username:req.body.username}, (err, docs) => { 
-                    if(docs.length === 1) {
-                        db.remove({_id: docs[0]._id}, (err, num) =>{
-                            res.json({suc:true});
-                        })
-                    } else {
-                        res.json({suc:false});
-                    }
-                })
+                deleteMod(docs[0]._id);
+                setTimeout(function(){ res.json({suc:true}); }, 100);    //resolve timing issue
             } else {
                 res.json({suc:false});
             }
-        })
-        
-        
+        })  
     } else {
         res.json({suc:false});
     }
 });
 
 
+
+
+function deleteMod(modID){
+    const db_user = new Datastore("db/users.db");
+    db_user.loadDatabase();
+    db_user.find({group:modID}, (err, docs) => {
+        docs.forEach(element => {
+            deleteUser(element._id);
+            if(docs.indexOf(element) === docs.length-1)
+                db_user.find({_id:modID}, (err, docs) => {
+                    console.log("deleted mod: ", docs[0]._id);
+                    db_user.remove({_id: docs[0]._id});
+                })
+        });
+    })
+}
+
+function deleteUser(userID){
+    const db_post = new Datastore("db/posts.db");
+    db_post.loadDatabase();
+    db_post.find({creatorId:userID}, (err, docs) => {
+        docs.forEach(element => {
+            deletePost(element._id);
+        });
+    })
+    const db_users = new Datastore("db/users.db");
+    db_users.loadDatabase();
+    db_users.find({_id:userID}, (err, docs) => {
+        console.log("deleted user: ", docs[0]._id);
+        db_users.remove({_id: docs[0]._id})
+
+    })
+}
+
+function deletePost(postID){
+    const db_post = new Datastore("db/posts.db");
+    db_post.loadDatabase();
+    db_post.find({_id:postID}, (err, docs) => {
+        console.log("deleted post: ", docs[0]._id);
+        db_post.remove({_id: docs[0]._id});
+    })
+}
 
 app.listen(8080, () => {
     console.log("Who da fuq woke me up!? port 8080");
