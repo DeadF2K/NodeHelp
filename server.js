@@ -36,7 +36,6 @@ app.get("/logout", (req, res) => {
 
 app.get("/newPost", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "user"){
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/new-Post.html')
     } else {
         req.session = null;
@@ -47,7 +46,6 @@ app.get("/newPost", (req, res) => {
 //cookie monster
 app.get("/admin-login", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/admin-login.html')
     } else {
         req.session = null;
@@ -57,7 +55,6 @@ app.get("/admin-login", (req, res) => {
 
 app.get("/mod-login", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "mod"){
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/mod-login.html')
     } else {
         req.session = null;
@@ -67,7 +64,6 @@ app.get("/mod-login", (req, res) => {
 
 app.get("/user-login", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "user"){
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/user-login.html')
     } else {
         req.session = null;
@@ -77,13 +73,10 @@ app.get("/user-login", (req, res) => {
 
 app.get("/main", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/admin-login.html')
     }else if(req.session.isLoggedIn && req.session.userRole === "mod") {
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/mod-login.html')
     }else if(req.session.isLoggedIn && req.session.userRole === "user") {
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/user-login.html')
     }else {
         req.session = null;
@@ -94,7 +87,6 @@ app.get("/main", (req, res) => {
 
 app.get("/manage-posts", (req, res) => {
     if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
-        console.log(req.session.userRole);
         res.sendFile(__dirname + '/public/manage-post.html')
     } else {
         req.session = null;
@@ -111,8 +103,6 @@ app.post("/login", (req, res) => {
     db.loadDatabase();
     const un = req.body.username;
     const pw = req.body.password;
-    console.log("Requestbody: ");
-    console.log(req.body);
     if(un && pw){
         db.find({username:un}, (err, docs) => {
             if(docs.length === 1){
@@ -141,7 +131,6 @@ app.post("/login", (req, res) => {
 /*create new mod*/
 app.post("/newmod", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
-        console.log(req.body);
         const nun = req.body.username;
         const nemail = req.body.email;
         const db = new Datastore("db/users.db");
@@ -151,8 +140,6 @@ app.post("/newmod", (req, res) => {
                 db.find({email:nemail}, (err, docs) => {
                     if(docs.length === 0){
                         bcrypt.hash(nun, 10, (err, hash) => {
-                            console.log(err);
-                            console.log(hash);
                             db.insert({email: nemail, username: nun, password: hash, role: "mod", suspended: false}, (err, doc) => {
                                 res.json({suc:true});
                             });
@@ -197,7 +184,6 @@ app.get("/getmods", (req, res) => {
 /*create new users*/
 app.post("/newuser", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "mod"){
-        console.log(req.body);
         const nun = req.body.username;
         const nemail = req.body.email;
         const db = new Datastore("db/users.db");
@@ -207,8 +193,6 @@ app.post("/newuser", (req, res) => {
                 db.find({email:nemail}, (err, docs) => {
                     if(docs.length === 0){
                         bcrypt.hash(nun, 10, (err, hash) => {
-                            console.log(err);
-                            console.log(hash);
                             db.insert({email: nemail, username: nun, password: hash, role: "user", group: req.session.userid, suspended: false}, (err, doc) => {
                                 res.json({suc:true});
                             });
@@ -253,7 +237,6 @@ app.get("/getusers", (req, res) => {
 /*Create new Post*/
 app.post("/newpost", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "user"){
-        console.log(req.body);
         const db = new Datastore("db/posts.db");
         db.loadDatabase();
         db.insert({
@@ -379,7 +362,7 @@ app.post("/toggleShow", (req, res) => {
 });
 
 app.post("/deletePost", (req, res) => {
-    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+    if(req.session.isLoggedIn){
         const db = new Datastore("db/posts.db");
         db.loadDatabase();
         db.find({_id:req.body.postid}, (err, docs) => { 
@@ -452,5 +435,5 @@ app.post("/deleteMod", (req, res) => {
 
 
 app.listen(8080, () => {
-    console.log("Sever online on port 8080.");
+    console.log("Who da fuq woke me up!? port 8080");
 })

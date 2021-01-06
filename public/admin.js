@@ -60,10 +60,14 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         })
         var data = await response.json();
+        try{
         showMods(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         console.log(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         maxPages = data.users.length / 8;
         console.log(maxPages, currentPage+1)
+        }catch(error){
+            document.getElementById("table").innerHTML = "";        //empty table
+        }
     };
     loadMods();
 

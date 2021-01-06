@@ -13,10 +13,32 @@ document.addEventListener("DOMContentLoaded", function(){
     pageDown.addEventListener("click", () => {
         if(currentPage > 0){
             currentPage--;
-            
             loadPosts();
         }
     });
+
+    async function deletePost(postid){
+        var response = await fetch("/deletePost", {
+            method: "POST",
+            headers: {
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({postid:postid})
+        })
+        var data = await response.json();
+        console.log(data);
+        if(data.suc || !data.suc){
+            loadPosts();
+        }
+    };
+
+    document.addEventListener("click", function(e){
+        if(e.target && e.target.classList.contains("remButton")){
+            var postid = e.target.getAttribute("data-username");
+            deletePost(postid);
+        }
+    })
 
     /*logout*/
     var lgoBtn = document.getElementById("lgoBtn");
@@ -43,10 +65,14 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         })
         var data = await response.json();
+        try{
         showPosts(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         console.log(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         maxPages = data.users.length / 8;
         console.log(maxPages, currentPage+1)
+        }catch(error){
+            document.getElementById("table").innerHTML = "";        //empty table
+        }
     };
     loadPosts();
 
