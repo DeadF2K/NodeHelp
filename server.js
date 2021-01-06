@@ -27,15 +27,19 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+/* Landing Page Call */
 app.get("/", (req, res) => {
     res.send("index.html");
 });
 
+/* Logout Call */
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
 });
 
+/* New Post Page Call */
 app.get("/newPost", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "user"){
         res.sendFile(__dirname + '/public/new-Post.html')
@@ -45,34 +49,17 @@ app.get("/newPost", (req, res) => {
     }
 });
 
-//cookie monster
-app.get("/admin-login", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "admin"){
-        res.sendFile(__dirname + '/public/admin-login.html')
+/* Manage Posts Page Call */
+app.get("/manage-posts", (req, res) => {
+    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+        res.sendFile(__dirname + '/public/manage-post.html')
     } else {
         req.session = null;
         res.redirect("/");
     }
 });
 
-app.get("/mod-login", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "mod"){
-        res.sendFile(__dirname + '/public/mod-login.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
-app.get("/user-login", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "user"){
-        res.sendFile(__dirname + '/public/user-login.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
+/* Back to Admin/Mod/User Landing Page */
 app.get("/main", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
         res.sendFile(__dirname + '/public/admin-login.html')
@@ -86,20 +73,12 @@ app.get("/main", (req, res) => {
     }
 });
 
-
-app.get("/manage-posts", (req, res) => {
-    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
-        res.sendFile(__dirname + '/public/manage-post.html')
-    } else {
-        req.session = null;
-        res.redirect("/");
-    }
-});
-
+/* Noticeboard Page Call */
 app.get("/info", (req, res) => {
     res.sendFile(__dirname + '/public/info-page.html')
 });
 
+/* Login/Credentials check and Redirect */
 app.post("/login", (req, res) => {
     const db = new Datastore("db/users.db");
     db.loadDatabase();
@@ -120,7 +99,7 @@ app.post("/login", (req, res) => {
                             res.json({suc:true, redirect:"admin"})              //login to admin page
                         } else if(userRole === "mod"){
                             res.json({suc:true, redirect:"mod"})               //login to mod page
-                        } else {
+                        } else if(userRole === "user"){
                             res.json({suc:true, redirect:"user"})               //login to user page
                         }
                     } else { res.json({suc:false}); }
@@ -324,6 +303,7 @@ app.get("/getposts", (req, res) => {
     }
 });
 
+/* Toggle The Suspended State of a User/Mod */
 app.post("/toggleSus", (req, res) => {
     if(req.session.isLoggedIn && (req.session.userRole === "admin" || req.session.userRole === "mod")){
         const db = new Datastore("db/users.db");
@@ -344,6 +324,7 @@ app.post("/toggleSus", (req, res) => {
     }
 });
 
+/* Toggle the Showing Post state */
 app.post("/toggleShow", (req, res) => {
     if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
         const db = new Datastore("db/posts.db");

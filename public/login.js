@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", function(){
         if(data.suc){
             switch(data.redirect) {
                 case "admin": 
-                    window.location = "/admin-login"
+                    window.location = "/main"
                     break;
                 case "mod":
-                    window.location = "/mod-login"
+                    window.location = "/main"
                     break;
                 case "user":
-                    window.location = "/user-login"
+                    window.location = "/main"
                     break;
                 default:
                     break;
