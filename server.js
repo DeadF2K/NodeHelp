@@ -75,11 +75,27 @@ app.get("/user-login", (req, res) => {
     }
 });
 
-
-app.get("/mod-manage-posts", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+app.get("/main", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "admin"){
         console.log(req.session.userRole);
-        res.sendFile(__dirname + '/public/mod-manage-post.html')
+        res.sendFile(__dirname + '/public/admin-login.html')
+    }else if(req.session.isLoggedIn && req.session.userRole === "mod") {
+        console.log(req.session.userRole);
+        res.sendFile(__dirname + '/public/mod-login.html')
+    }else if(req.session.isLoggedIn && req.session.userRole === "user") {
+        console.log(req.session.userRole);
+        res.sendFile(__dirname + '/public/user-login.html')
+    }else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
+
+
+app.get("/manage-posts", (req, res) => {
+    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+        console.log(req.session.userRole);
+        res.sendFile(__dirname + '/public/manage-post.html')
     } else {
         req.session = null;
         res.redirect("/");
@@ -257,14 +273,32 @@ app.post("/newpost", (req, res) => {
 
 app.get("/getposts", (req, res) => {
     if(req.session.isLoggedIn){
+        const db_post = new Datastore("db/posts.db");
+        db_post.loadDatabase();
         switch(req.session.userRole)
         {
             case "admin":
-
+                db_post.find({}, (err, docs) => {
+                    if(docs.length > 0) {
+                        let resArray = [];
+                        docs.forEach(element => {
+                            resArray.push({
+                                creator: element.creatorName,
+                                postid: element._id,
+                                title:element.title,
+                                text:element.text,
+                                showpost:element.showpost,
+                                startDate:element.startDate,
+                                endDate:element.endDate,
+                            })
+                        });
+                        res.json({suc:true, users:resArray})
+                    } else {
+                        res.json({suc:false});
+                    }
+                });
             break;
             case "mod":
-                const db_post = new Datastore("db/posts.db");
-                db_post.loadDatabase();
                 db_post.find({creatorGroup:req.session.userid}, (err, docs) => {
                     if(docs.length > 0) {
                         let resArray = [];
@@ -284,12 +318,9 @@ app.get("/getposts", (req, res) => {
                         res.json({suc:false});
                     }
                 });
-                
                 break;
             case "user":
-                const db = new Datastore("db/posts.db");
-                db.loadDatabase();
-                db.find({creatorId:req.session.userid}, (err, docs) => {
+                db_post.find({creatorId:req.session.userid}, (err, docs) => {
                     if(docs.length > 0) {
                         let resArray = [];
                             docs.forEach(element => {
@@ -329,15 +360,88 @@ app.post("/toggleSus", (req, res) => {
 });
 
 app.post("/toggleShow", (req, res) => {
-    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
         const db = new Datastore("db/posts.db");
         db.loadDatabase();
-
         db.find({_id:req.body.postid}, (err, docs) => { 
             if(docs.length === 1) {
                 var now = !docs[0].showpost;
                 db.update({_id: docs[0]._id}, {$set: {showpost: now}}, (err, num) =>{
                     res.json({suc:true});  
+                })
+            } else {
+                res.json({suc:false});
+            }
+        })
+    } else {
+        res.json({suc:false});
+    }
+});
+
+app.post("/deletePost", (req, res) => {
+    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+        const db = new Datastore("db/posts.db");
+        db.loadDatabase();
+        db.find({_id:req.body.postid}, (err, docs) => { 
+            if(docs.length === 1) {
+                db.remove({_id: docs[0]._id}, (err, num) =>{
+                    res.json({suc:true});
+                })
+            } else {
+                res.json({suc:false});
+            }
+        })
+    } else {
+        res.json({suc:false});
+    }
+});
+
+app.post("/deleteUser", (req, res) => {
+    if(req.session.isLoggedIn && req.session.userRole === "mod"){
+        const db = new Datastore("db/users.db");
+        db.loadDatabase();
+        db.find({username:req.body.username}, (err, docs) => { 
+            if(docs.length === 1) {
+                db.remove({_id: docs[0]._id}, (err, num) =>{
+                    res.json({suc:true});
+                })
+            } else {
+                res.json({suc:false});
+            }
+        })
+    } else {
+        res.json({suc:false});
+    }
+});
+
+app.post("/deleteMod", (req, res) => {
+    var modid;
+    if(req.session.isLoggedIn && req.session.userRole === "admin"){
+        const db = new Datastore("db/users.db");
+        db.loadDatabase();
+        db.find({username:req.body.username}, (err, docs) => { 
+            if(docs.length === 1) {
+                modid = docs[0]._id;
+                //res.json({suc:"getting there"});
+            } else {
+                res.json({suc:false});
+            }
+        })
+        db.find({group:modid}, (err, docs) => { 
+            if(docs.length > 0) {
+                forEach(element => {
+                    db.remove({_id: docs[0]._id}, (err, num) =>{
+                        //res.json({suc:"almost there"});
+                    })
+                });
+            } else {
+                res.json({suc:false});
+            }
+        })
+        db.find({username:req.body.username}, (err, docs) => { 
+            if(docs.length === 1) {
+                db.remove({_id: docs[0]._id}, (err, num) =>{
+                    res.json({suc:true});
                 })
             } else {
                 res.json({suc:false});

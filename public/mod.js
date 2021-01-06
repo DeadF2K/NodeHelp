@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     var mngBtn = document.getElementById("mngBtn");
     mngBtn.addEventListener("click", () => {
-        window.location = "/mod-manage-posts";
+        window.location = "/manage-posts";
     });
 
     var maxPages;
@@ -120,11 +120,30 @@ document.addEventListener("DOMContentLoaded", function(){
             }
     };
 
+    async function deleteUser(username){
+        var response = await fetch("/deleteUser", {
+            method: "POST",
+            headers: {
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({username:username})
+        })
+        var data = await response.json();
+        console.log(data);
+        if(data.suc || !data.suc){
+            loadUsers();
+        }
+    };
+
 
     document.addEventListener("click", function(e){
         if(e.target && e.target.classList.contains("susButton")){
             var un = e.target.getAttribute("data-username");
             toggleSus(un);
+        }else if(e.target && e.target.classList.contains("remButton")){
+            var username = e.target.getAttribute("data-username");
+            deleteUser(username);
         }
     })
 

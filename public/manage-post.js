@@ -26,11 +26,27 @@ document.addEventListener("DOMContentLoaded", function(){
     
     var mngBtn = document.getElementById("mngBtn");
     mngBtn.addEventListener("click", () => {
-        window.location = "/mod-login";
+        window.location = "/main";
     });
 
     async function toggleSus(postid){
         var response = await fetch("/toggleShow", {
+            method: "POST",
+            headers: {
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({postid:postid})
+        })
+        var data = await response.json();
+        console.log(data);
+        if(data.suc || !data.suc){
+            loadPosts();
+        }
+    };
+
+    async function deletePost(postid){
+        var response = await fetch("/deletePost", {
             method: "POST",
             headers: {
                 "Accept":"application/json",
@@ -50,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function(){
         if(e.target && e.target.classList.contains("susButton")){
             var postid = e.target.getAttribute("data-username");
             toggleSus(postid);
+        }else if(e.target && e.target.classList.contains("remButton")){
+            var postid = e.target.getAttribute("data-username");
+            deletePost(postid);
         }
     })
 

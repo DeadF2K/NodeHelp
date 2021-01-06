@@ -115,11 +115,35 @@ document.addEventListener("DOMContentLoaded", function(){
             }
     };
 
+    async function deleteMod(username){
+        var response = await fetch("/deleteMod", {
+            method: "POST",
+            headers: {
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({username:username})
+        })
+        var data = await response.json();
+        console.log(data);
+        if(data.suc || !data.suc){
+            loadMods();
+        }
+    };
+
+    var mngBtn = document.getElementById("mngBtn");
+    mngBtn.addEventListener("click", () => {
+        window.location = "/manage-posts";
+    });
+
 
     document.addEventListener("click", function(e){
         if(e.target && e.target.classList.contains("susButton")){
             var un = e.target.getAttribute("data-username");
             toggleSus(un);
+        }else if(e.target && e.target.classList.contains("remButton")){
+            var username = e.target.getAttribute("data-username");
+            deleteMod(username);
         }
     })
 
