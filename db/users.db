@@ -1,7 +1,3 @@
-{"email":"mod1@ghd.de","username":"mod1","password":"$2b$10$Hnil2s9m22Q9Y1Cnkk0wG.N9ZhS/urOny81CX4nnPE33PiJlxCkxK","role":"mod","suspended":false,"_id":"14hPsrRwM7QHarPe"}
-{"email":"mod2@ghd.de","username":"mod2","password":"$2b$10$Lcg3KhO22sBkvyVJm8VReuNT4/ZVzArrWjXhi9vdvdsanSXWXVPXW","role":"mod","suspended":false,"_id":"2VCFNejCK8S5tx2w"}
-{"email":"user1-mod1@ghd.de","username":"user1-mod1","password":"$2b$10$roCKwONr.pGex.cI7dFzPuexxPmqWptuRP0lCKGaDmdpO4.mbeQzC","role":"user","group":"14hPsrRwM7QHarPe","suspended":false,"_id":"C6XL9fnxecrfHQGI"}
-{"email":"user3-mod1@ghd.de","username":"user3-mod1","password":"$2b$10$WnFRVm/Jm6Rzq/zPRSVgOuh9.2MTb6KsjsHZdwzxNtS2w3HE6mj/a","role":"user","group":"14hPsrRwM7QHarPe","suspended":false,"_id":"Kre0A3f7XwOtiRts"}
-{"email":"user2-mod1@ghd.de","username":"user2-mod1","password":"$2b$10$PPYJsNXE4cC6AHq06cXp9umNJwa.pQmQ0S1p.6cSVPz8beBaudcGa","role":"user","group":"14hPsrRwM7QHarPe","suspended":false,"_id":"QVNeALTOOPnt9mwu"}
+{"email":"mod@mod.mod","username":"mod","password":"$2b$10$EP330BR26E0Wtw0RdqYaLOX3B3obQlmke1mAoG.00Y5TbJJ5CC0.6","role":"mod","suspended":false,"_id":"IYk5JNqg73zrWXoT"}
+{"email":"user@user.user","username":"user","password":"$2b$10$boMq./oM3tKgj8zJwqQIneY8LzLaL30hEBYUbXEDcPcLoawannyCq","role":"user","group":"IYk5JNqg73zrWXoT","suspended":false,"_id":"T7V7SChU1F1j3vWE"}
 {"email":"admin@ghd.de","username":"admin","password":"$2b$10$30zu4TwSjMdjmnGQ.Nr6C./Tu71kEhlUHkHso2bnkKkn7Pm2q.u3e","role":"admin","_id":"VxsdGrHioVlUga4q"}
-{"email":"mod3@ghd.de","username":"mod3","password":"$2b$10$J8corQMJB082wXRKiepSS.DY7g647nLGHu.rKPdXMnf25R7CfJqfu","role":"mod","suspended":false,"_id":"cIlVt6vidmDbpJ58"}
