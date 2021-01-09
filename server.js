@@ -413,7 +413,7 @@ app.post("/deletePost", (req, res) => {
 /*--------------------------------------------------FUNCTIONS--------------------------------------------------*/
 
 function deleteMod(modID){
-    const db_user = new Datastore("db/users.db");
+    const db_users = new Datastore("db/users.db");
     db_users.loadDatabase();
     db_users.find({group:modID}, (err, docs) => {
         docs.forEach(element => {

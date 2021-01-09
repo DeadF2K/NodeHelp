@@ -5,3 +5,4 @@
 {"email":"user2-mod1@ghd.de","username":"user2-mod1","password":"$2b$10$PPYJsNXE4cC6AHq06cXp9umNJwa.pQmQ0S1p.6cSVPz8beBaudcGa","role":"user","group":"14hPsrRwM7QHarPe","suspended":false,"_id":"QVNeALTOOPnt9mwu"}
 {"email":"admin@ghd.de","username":"admin","password":"$2b$10$30zu4TwSjMdjmnGQ.Nr6C./Tu71kEhlUHkHso2bnkKkn7Pm2q.u3e","role":"admin","_id":"VxsdGrHioVlUga4q"}
 {"email":"mod3@ghd.de","username":"mod3","password":"$2b$10$J8corQMJB082wXRKiepSS.DY7g647nLGHu.rKPdXMnf25R7CfJqfu","role":"mod","suspended":false,"_id":"cIlVt6vidmDbpJ58"}
+
