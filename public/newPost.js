@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function(){
         }
         else if(maxPages = currentPage+1) {
             save();
-            window.location = "/user-login";
+            window.location = "/main";
         }
     }
     document.getElementById("pageDown").onclick = function(){
