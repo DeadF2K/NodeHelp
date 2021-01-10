@@ -1,3 +1,3 @@
 {"email":"mod@mod.mod","username":"mod","password":"$2b$10$EP330BR26E0Wtw0RdqYaLOX3B3obQlmke1mAoG.00Y5TbJJ5CC0.6","role":"mod","suspended":false,"_id":"IYk5JNqg73zrWXoT"}
-{"email":"user@user.user","username":"user","password":"$2b$10$boMq./oM3tKgj8zJwqQIneY8LzLaL30hEBYUbXEDcPcLoawannyCq","role":"user","group":"IYk5JNqg73zrWXoT","suspended":false,"_id":"T7V7SChU1F1j3vWE"}
+{"email":"user@user.user","username":"user","password":"$2b$10$4ToAJkhNYIVMkxJeL.wuPOsponHzlih2qtHloo7sMDHmUvw7IZSQa","role":"user","group":"IYk5JNqg73zrWXoT","suspended":false,"_id":"T7V7SChU1F1j3vWE"}
 {"email":"admin@ghd.de","username":"admin","password":"$2b$10$30zu4TwSjMdjmnGQ.Nr6C./Tu71kEhlUHkHso2bnkKkn7Pm2q.u3e","role":"admin","_id":"VxsdGrHioVlUga4q"}

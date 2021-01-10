@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", function(){
         register();
     });
 
+    document.getElementById("changePwBtn").onclick = function(){
+        window.location = "/new-password";
+    }
 
     /*changin page*/
     var pageUp = document.getElementById("pageUp");
