@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(){
 
+    document.getElementById("topper").onclick = function(){
+        window.location = "/main";
+    }
+
     var maxPages;
     var currentPage = 0;
     var maxDisplayed = 8;

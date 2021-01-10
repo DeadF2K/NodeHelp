@@ -142,3 +142,103 @@ button:focus{
 #submit-post{
     margin-left: .5rem;
 }
+
+/*-----POPUP-----*/
+.popup{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 50ms ease-in-out;
+    border: 1px solid #555;
+    z-index: 10;                            /*lay ontop of everything*/
+    background-color: #222;
+    width: 500px;
+    max-width: 80%;
+}
+
+.popup.active{
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-header{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid red;
+}
+
+.popup-header .title{
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.popup-header .close-btn{
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+.popup-body{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+#overlay{
+    position: fixed;
+    opacity: 0;
+    transition: 50ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.75);
+    pointer-events: none;
+}
+
+#overlay.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.popup-body{
+    display: fixed;
+    justify-items: center;
+}
+
+#formNewUser{
+    width: 50%;
+}
+
+input {
+    width: 100%;
+    font-family: Arial;
+    font-size: 1em;
+    color: white;
+    padding: 0;
+    padding-bottom: 5px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 15px;
+    margin-top: 15px
+}
+
+input:focus {
+    outline: 0;
+}
+
+#submit{
+    height: 30px;
+    width: 90px;
+    /*text*/
+    color: white;
+    font-size: 15px;
+}
+/*-----POPUP-END-----*/

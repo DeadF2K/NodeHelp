@@ -81,7 +81,14 @@ app.get("/new-password", (req, res) => {
     }
 });
 
-
+app.get("/post-review", (req, res) => {
+    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+        res.sendFile(__dirname + '/public/post-review.html')
+    } else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
 
 /*--------------------------------------------------GETTER FUNCTIONS--------------------------------------------------*/
 
@@ -228,7 +235,6 @@ app.get("/getliveposts", (req, res) => {
                     }
                 }                                 
             });
-            console.log(resArray);
             res.json({suc:true, posts:resArray})
         } else {
             res.json({suc:false});
@@ -473,8 +479,6 @@ app.post("/deletePost", (req, res) => {
         res.json({suc:false});
     }
 });
-
-
 
 /*--------------------------------------------------FUNCTIONS--------------------------------------------------*/
 

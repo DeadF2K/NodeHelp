@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "/main";
     }
 
+    document.getElementById("add").onclick = function(){
+        document.execCommand("insertImage", false, document.getElementById("url").value);
+    }
+
     const textColor = document.getElementById("forecolor")
     textColor.addEventListener('change', function(){
         setColor(this);
@@ -58,4 +62,36 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log(helo);
         window.location = "/main";
     }
+
+    /*-----New User Popup-----*/
+    const openPopupBtns = document.querySelectorAll("[data-popup-target]");
+    const closePopupBtns = document.querySelectorAll("[data-close-btn]");
+    const overlay = document.getElementById("overlay");
+
+    openPopupBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const popup = document.querySelector(btn.dataset.popupTarget);
+            openPopup(popup);
+        })
+    });
+
+    closePopupBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const popup = btn.closest(".popup")
+            closePopup(popup);
+        })
+    });
+
+    function openPopup(popup) {
+        if (popup == null) return
+        popup.classList.add("active");
+        overlay.classList.add("active");
+    }
+
+    function closePopup(popup) {
+        if (popup == null) return
+        popup.classList.remove("active");
+        overlay.classList.remove("active");
+    }
+
 });

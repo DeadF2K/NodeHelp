@@ -16,6 +16,27 @@
         </div> 
         <div class="editor">
             <div class="editor-menubar">
+                <button class="editor-button icon-picture" data-popup-target="#addPopup" id="addBtn" data-attribute="insertImage" title="Add Image"></button>
+                <div class="" id="overlay"></div>
+                <div class="popup" id="addPopup">
+                    <div class="popup-header">
+                        <div class="title">Add Picture</div>
+                        <button data-close-btn class="close-btn">&times;</button>
+                    </div>
+                    <div class="popup-body">
+                        <div class="" id="formNewUser">
+                            <div class="regSection">
+                                <input type="text" id="url" required placeholder="URL">
+                            </div>
+                            <div class="btn">
+                                <button type="submit" value="Create" id="add">
+                                    <span>Add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
                 <button class="editor-button icon-bold" data-attribute="bold" title="Bold"></button>
                 <button class="editor-button icon-italic" data-attribute="italic" title="Italic"></button>
                 <button class="editor-button icon-underline" data-attribute="underline" title="Underline"></button>
