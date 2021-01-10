@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Post Editor</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='styles_v2.css'>
+    <script src='new-Postv2.js'></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+</head>
+<body>  
+    <div id="box">
+        <div class=topper>
+            <button id="cancelBtn" title="Cancel">&times;</button>
+        </div> 
+        <div class="editor">
+            <div class="editor-menubar">
+                <button class="editor-button icon-bold" data-attribute="bold" title="Bold"></button>
+                <button class="editor-button icon-italic" data-attribute="italic" title="Italic"></button>
+                <button class="editor-button icon-underline" data-attribute="underline" title="Underline"></button>
+                <button class="editor-button icon-superscript" data-attribute="superscript" title="Superscript"></button>
+                <button class="editor-button icon-subscript" data-attribute="subscript" title="Subscript"></button>
+                <input class="color-select" data-attribute="forecolor" type="color" id="forecolor" title="Text Colour">
+            </div>
+            <div id="title-text">
+                <div class="canvas" id="title-canvas" contenteditable=true data-text="Title"></div>
+                <div class="canvas" id="editor-canvas" contenteditable=true data-text="Content"></div>
+            </div>
+            <div class="editor-menubar">
+                <button class="editor-button icon-undo" data-attribute="undo" title="Undo"></button>
+                <button class="editor-button icon-repeat" data-attribute="redo" title="Redo"></button>
+                <button class="editor-button icon-align-left" data-attribute="justifyleft" title="Justify Left"></button>
+                <button class="editor-button icon-align-center" data-attribute="justifycenter" title="Justify Center"></button>
+                <button class="editor-button icon-align-right" data-attribute="justifyright" title="Justify Right"></button>
+                <input class="color-select" data-attribute="backcolor" type="color" id="backcolor" title="Background Colour" value="#ffffff">
+            </div>
+        </div>
+        <div class="lower">
+            <div class="calendar">
+                <label  for="start">Start date:</label>
+                <input class="calendar-element" type="date" id="startDate" value=${today} min=${today}>
+            </div>
+            <div class="calendar">
+                <label  for="start">End date:</label>
+                <input class="calendar-element" type="date" id="endDate" value=${today} min=${today}>
+            </div>
+            <button id="submit-post">Submit</button>
+        </div>
+    </div>
+</body>
+</html>

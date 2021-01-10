@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
             case 0:
                 title = document.getElementById("title").value;
                 text = document.getElementById("textarea").value;
+                //text.replace("\n", "<br />");
                 break;
             case 1:
                 startDate = document.getElementById("startDate").value;
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function(){
         <div class="datePreview">${startDate}  bis  ${endDate}</div>
         <div id="postPreview">
         <h1>${title}</h1>
-        <a>${text}</a>
+        <pre>${text}</pre>
         <div>
         `
         container.appendChild(content)

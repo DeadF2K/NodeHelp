@@ -56,7 +56,7 @@ app.get("/main", (req, res) => {
 
 app.get("/newPost", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "user"){
-        res.sendFile(__dirname + '/public/new-Post.html')
+        res.sendFile(__dirname + '/public/new-Postv2.html')
     } else {
         req.session = null;
         res.redirect("/");
@@ -311,7 +311,8 @@ app.post("/newpost", (req, res) => {
             startDate:req.body.startDate ,
             endDate:req.body.endDate ,
             title:req.body.title ,
-            text:req.body.text 
+            text:req.body.text,
+            bcolor:req.body.bcolor
         }, (err, doc) => {
             res.json({suc:true});
         });
