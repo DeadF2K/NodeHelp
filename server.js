@@ -201,7 +201,40 @@ app.get("/getposts", (req, res) => {
     }
 });
 
-
+app.get("/getliveposts", (req, res) => {
+    const now = new Date();
+    const now_year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now);
+    const now_month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(now);
+    const now_day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
+    const db_post = new Datastore("db/posts.db");
+    db_post.loadDatabase();
+    db_post.find({}, (err, docs) => {
+        if(docs.length > 0) {
+            let resArray = [];
+            docs.forEach(element => {
+                if(element.showpost){  
+                    const startDate = element.startDate.split("-", 3);
+                    const endDate = element.endDate.split("-", 3);
+                    if((now_year >= startDate[0]) && (now_year <= endDate[0])){
+                        if((now_month >= startDate[1]) && (now_month <= endDate[1])){
+                            if((now_day >= startDate[2]) && (now_day <= endDate[2])){
+                                resArray.push({
+                                    title:element.title,
+                                    text:element.text,
+                                    bcolor:element.bcolor
+                                })
+                            }
+                        }
+                    }
+                }                                 
+            });
+            console.log(resArray);
+            res.json({suc:true, posts:resArray})
+        } else {
+            res.json({suc:false});
+        }
+    });
+});
 
 /*--------------------------------------------------FUNCTIONS--------------------------------------------------*/
 
