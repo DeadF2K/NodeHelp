@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function(){
     var pageUp = document.getElementById("pageUp");
     var pageDown = document.getElementById("pageDown");
 
+    document.getElementById("changePwBtn").onclick = function(){
+        window.location = "/new-password";
+    }
+
     pageUp.addEventListener("click", () => {
         if(maxPages > currentPage+1) {
             currentPage++;

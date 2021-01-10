@@ -72,6 +72,15 @@ app.get("/manage-posts", (req, res) => {
     }
 });
 
+app.get("/new-password", (req, res) => {
+    if(req.session.isLoggedIn){
+        res.sendFile(__dirname + '/public/change-pw.html')
+    } else {
+        req.session = null;
+        res.redirect("/");
+    }
+});
+
 
 
 /*--------------------------------------------------GETTER FUNCTIONS--------------------------------------------------*/
@@ -230,6 +239,29 @@ app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
 });
+
+app.post("/changepw", (req, res) => {
+    const db = new Datastore("db/users.db");
+    db.loadDatabase();
+    const old_pw = req.body.old_password;
+    const new_pw_1 = req.body.new_password_1;
+    const new_pw_2 = req.body.new_password_2;
+    if(old_pw && (new_pw_1 === new_pw_2)){
+        db.find({_id:req.session.userid}, (err, docs) => {
+            if(docs.length === 1){
+                bcrypt.compare(old_pw, docs[0].password, (err, result) => {
+                    if(result){                                        
+                        bcrypt.hash(new_pw_1, 10, (err, hash) => {         
+                            db.update({_id: docs[0]._id}, {$set: {password: hash}}, (err, num) =>{
+                                res.json({suc:true});
+                            });
+                        })
+                    } else { res.json({suc:false}); }
+                })
+            } else { res.json({suc:false}); }
+        })
+    } else { res.json({suc:false}); }
+})
 
 app.post("/newmod", (req, res) => {
     if(req.session.isLoggedIn && req.session.userRole === "admin"){
