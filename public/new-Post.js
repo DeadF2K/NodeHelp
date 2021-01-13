@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log("Sending Formular")
         async function register(){
             
-            var text = document.getElementById("textarea");
-            console.log(text);
+            var text_content = document.getElementById("textarea");
+            console.log(text_content);
             loadUsers();
         }
         register();

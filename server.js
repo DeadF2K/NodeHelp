@@ -265,11 +265,11 @@ app.get("/getliveposts", (req, res) => {
                     if((now_year >= startDate[0]) && (now_year <= endDate[0])){
                         if((now_month >= startDate[1]) && (now_month <= endDate[1])){
                             if((now_day >= startDate[2]) && (now_day <= endDate[2])){
-                                db_users.find({_id:element.creatorId}, (err, docs2) =>{
+                                db_users.find({_id:element.creatorId}, (err2, docs2) =>{
                                     docs2.forEach(element2 => {
                                         if(!element2.suspended)
                                         { 
-                                            db_users.find({_id:element.creatorGroup}, (err, docs3) =>{
+                                            db_users.find({_id:element.creatorGroup}, (err3, docs3) =>{
                                                 docs3.forEach(element3 => {
                                                     if(!element3.suspended)
                                                     { 
@@ -307,7 +307,7 @@ app.post("/login", (req, res) => {
         db.find({username:un}, (err, docs) => {
             if(docs.length === 1){
                 const userRole =  docs[0].role;
-                bcrypt.compare(pw, docs[0].password, (err, result) => {
+                bcrypt.compare(pw, docs[0].password, (err2, result) => {
                     if(result){                                                 
                         req.session.userRole = userRole;
                         req.session.userid = docs[0]._id;
@@ -343,10 +343,10 @@ app.post("/changepw", (req, res) => {
     if(old_pw && (new_pw_1 === new_pw_2)){
         db.find({_id:req.session.userid}, (err, docs) => {
             if(docs.length === 1){
-                bcrypt.compare(old_pw, docs[0].password, (err, result) => {
+                bcrypt.compare(old_pw, docs[0].password, (err2, result) => {
                     if(result){                                        
-                        bcrypt.hash(new_pw_1, 10, (err, hash) => {         
-                            db.update({_id: docs[0]._id}, {$set: {password: hash}}, (err, num) =>{
+                        bcrypt.hash(new_pw_1, 10, (err3, hash) => {         
+                            db.update({_id: docs[0]._id}, {$set: {password: hash}}, (err4, num) =>{
                                 res.json({suc:true});
                             });
                         })
@@ -365,15 +365,15 @@ app.post("/newmod", (req, res) => {
         db.loadDatabase();
         db.find({username:nun}, (err, docs) => {
             if(docs.length === 0){
-                db.find({email:nemail}, (err, docs) => {
-                    if(docs.length === 0){
-                        bcrypt.hash(nun, 10, (err, hash) => {
+                db.find({email:nemail}, (err2, docs2) => {
+                    if(docs2.length === 0){
+                        bcrypt.hash(nun, 10, (err3, hash) => {
                             db.insert({email: nemail, 
                                 username: nun,
                                 password: hash, 
                                 role: "mod", 
                                 suspended: false
-                            }, (err, doc) => {
+                            }, (err4, doc) => {
                                 res.json({suc:true});
                             });
                         });
@@ -398,9 +398,9 @@ app.post("/newuser", (req, res) => {
         db.loadDatabase();
         db.find({username:nun}, (err, docs) => {
             if(docs.length === 0){
-                db.find({email:nemail}, (err, docs) => {
-                    if(docs.length === 0){
-                        bcrypt.hash(nun, 10, (err, hash) => {
+                db.find({email:nemail}, (err2, docs2) => {
+                    if(docs2.length === 0){
+                        bcrypt.hash(nun, 10, (err3, hash) => {
                             db.insert({
                                 email: nemail, 
                                 username: nun, 
@@ -408,7 +408,7 @@ app.post("/newuser", (req, res) => {
                                 role: "user", 
                                 group: req.session.userid, 
                                 suspended: false
-                            }, (err, doc) => {
+                            }, (err4, doc) => {
                                 res.json({suc:true});
                             });
                         });
@@ -452,7 +452,7 @@ app.post("/toggleSus", (req, res) => {
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
                 var now = !docs[0].suspended;
-                db.update({_id: docs[0]._id}, {$set: {suspended: now}}, (err, num) =>{
+                db.update({_id: docs[0]._id}, {$set: {suspended: now}}, (err2, num) =>{
                     res.json({suc:true});  
                 })
             } else {
@@ -472,7 +472,7 @@ app.post("/toggleShow", (req, res) => {
         db.find({_id:req.body.postid}, (err, docs) => { 
             if(docs.length === 1) {
                 var now = !docs[0].showpost;
-                db.update({_id: docs[0]._id}, {$set: {showpost: now}}, (err, num) =>{
+                db.update({_id: docs[0]._id}, {$set: {showpost: now}}, (err2, num) =>{
                     res.json({suc:true});  
                 })
             } else {
@@ -544,9 +544,9 @@ function deleteMod(modID){
         docs.forEach(element => {
             deleteUser(element._id);
             if(docs.indexOf(element) === docs.length-1)
-                db_users.find({_id:modID}, (err, docs) => {
-                    console.log("deleted mod: ", docs[0]._id);
-                    db_users.remove({_id: docs[0]._id});
+                db_users.find({_id:modID}, (err2, docs2) => {
+                    console.log("deleted mod: ", docs2[0]._id);
+                    db_users.remove({_id: docs2[0]._id});
                 })
         });
     })

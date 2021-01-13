@@ -106,9 +106,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function date(){
         var today = new Date().toISOString().slice(0,10);
-        var date = new Date();
-        date.setDate(date.getDate() + 7)
-        var endDate = date.toISOString().slice(0,10);
+        var end = new Date();
+        end.setDate(end.getDate() + 7)
+        var endDate = end.toISOString().slice(0,10);
 
         document.getElementById("startDate").value = today;
         document.getElementById("startDate").min = today;
