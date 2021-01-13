@@ -253,27 +253,43 @@ app.get("/getliveposts", (req, res) => {
     const now_day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
     const db_post = new Datastore("db/posts.db");
     db_post.loadDatabase();
+    const db_users = new Datastore("db/users.db");
+    db_users.loadDatabase();
     db_post.find({}, (err, docs) => {
         if(docs.length > 0) {
             let resArray = [];
             docs.forEach(element => {
-                if(element.showpost){  
+                if(element.showpost){ 
                     const startDate = element.startDate.split("-", 3);
                     const endDate = element.endDate.split("-", 3);
                     if((now_year >= startDate[0]) && (now_year <= endDate[0])){
                         if((now_month >= startDate[1]) && (now_month <= endDate[1])){
                             if((now_day >= startDate[2]) && (now_day <= endDate[2])){
-                                resArray.push({
-                                    title:element.title,
-                                    text:element.text,
-                                    bcolor:element.bcolor
-                                })
+                                db_users.find({_id:element.creatorId}, (err, docs2) =>{
+                                    docs2.forEach(element2 => {
+                                        if(!element2.suspended)
+                                        { 
+                                            db_users.find({_id:element.creatorGroup}, (err, docs3) =>{
+                                                docs3.forEach(element3 => {
+                                                    if(!element3.suspended)
+                                                    { 
+                                                        resArray.push({
+                                                            title:element.title,
+                                                            text:element.text,
+                                                            bcolor:element.bcolor
+                                                        })
+                                                    }
+                                                })
+                                            })
+                                        }
+                                    })
+                                })                                
                             }
                         }
                     }
-                }                                 
+                }                               
             });
-            res.json({suc:true, posts:resArray})
+            setTimeout(function(){ res.json({suc:true, posts:resArray}); }, 100);   //delay to resolve timing issue
         } else {
             res.json({suc:false});
         }

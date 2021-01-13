@@ -17,12 +17,12 @@ document.addEventListener("DOMContentLoaded", function(){
         })
         
         var data = await response.json();
-        console.log(data);
+        //console.log(data);
         try{
         showPosts(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
-        console.log(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
+        //console.log(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         maxPages = data.posts.length / 8;
-        console.log(maxPages, currentPage+1)
+        //console.log(maxPages, currentPage+1)
         }catch(error){
             document.getElementById("content").innerHTML = "";        //empty content
         }
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function(){
         pdata.forEach(element => {
             var post = document.createElement("div");
             post.classList.add("post");
-            console.log(element.bcolor);
             post.style.backgroundColor = element.bcolor;
             post.innerHTML = `
                 <div class="title" style="background-color:${element.bcolor};">

@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     document.getElementById("submit-post").onclick = function(){
+        if(document.getElementById('title-canvas').innerHTML && document.getElementById('editor-canvas').innerHTML)
+        {
         const title = document.getElementById('title-canvas').innerHTML;
         const content = document.getElementById('editor-canvas').innerHTML;
         const date_begin = document.getElementById('startDate').value;
@@ -44,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function(){
         const bcolor = document.getElementById('backcolor').value;
         var bodyContent = {title:title, text:content, startDate:date_begin, endDate:date_end, bcolor:bcolor};
         send(bodyContent);
-
+        }
     };
 
     async function send(bodyContent){
@@ -94,4 +96,24 @@ document.addEventListener("DOMContentLoaded", function(){
         overlay.classList.remove("active");
     }
 
+    document.getElementById("startDate").onchange = function(){
+        document.getElementById("endDate").min = document.getElementById("startDate").value;
+        var end = new Date(document.getElementById("startDate").value);
+        end.setDate(end.getDate() +7);
+        var endDate = end.toISOString().slice(0,10);
+        document.getElementById("endDate").value = endDate;
+    }
+
+    function date(){
+        var today = new Date().toISOString().slice(0,10);
+        var date = new Date();
+        date.setDate(date.getDate() + 7)
+        var endDate = date.toISOString().slice(0,10);
+
+        document.getElementById("startDate").value = today;
+        document.getElementById("startDate").min = today;
+        document.getElementById("endDate").value = endDate;
+        document.getElementById("endDate").min = today;
+    };
+    date()
 });
