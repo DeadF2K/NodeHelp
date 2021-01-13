@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function(){
     /*changin page*/
     var pageUp = document.getElementById("pageUp");
     var pageDown = document.getElementById("pageDown");
+    var reviewButtons = document.getElementsByClassName('editButton');
+
+    
 
     document.getElementById("changePwBtn").onclick = function(){
         window.location = "/new-password";
@@ -74,6 +77,9 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log(data.users.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         maxPages = data.users.length / 8;
         console.log(maxPages, currentPage+1)
+        reviewButtons = document.getElementsByClassName('editButton');
+        console.log(reviewButtons.length);
+        addButtons();
         }catch(error){
             document.getElementById("table").innerHTML = "";        //empty table
         }
@@ -87,9 +93,9 @@ document.addEventListener("DOMContentLoaded", function(){
             var row = document.createElement("div");
             var status;
             if(!element.showpost) {
-                status = "hidden"
+                status = "hidden icon-eye-close"
             } else {
-                status = "shown"
+                status = "shown icon-eye-open"
             }
             row.classList.add("row");
             row.innerHTML = `
@@ -97,6 +103,9 @@ document.addEventListener("DOMContentLoaded", function(){
                     <h2>${element.title}</h2>
                 </div>
                 <div class="col-right">
+                    <button class="editButton" data-username="${element.postid}">
+                        <i class="icon-file-text-alt , icon"></i>
+                    </button>
                     <button class="${status} susButton">
                     </button>
                     <button class="remButton" data-username="${element.postid}">
@@ -108,4 +117,27 @@ document.addEventListener("DOMContentLoaded", function(){
         });
     }
    
+    async function reviewPost(postid){
+        var response = await fetch("/updatePostID", {
+            method: "POST",
+            headers: {
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({postid:postid})
+        })
+        var data = await response.json();
+        if(data || !data)
+        {
+        window.location = "/post-review";
+        }
+    };
+    
+    function addButtons(){
+    for(let i = 0; i < reviewButtons.length; i++){
+        reviewButtons[i].addEventListener('click', function(){
+            reviewPost(this.dataset.username)
+        })
+    }
+    }
 });

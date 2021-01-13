@@ -245,7 +245,7 @@ input:focus {
     margin-left: 5px;
 }
 
-.remButton, .susButton , .backButton , .nextButton{
+.remButton, .susButton , .backButton , .nextButton , .editButton{
     display: flex;
     justify-content: center;
     align-items: center;

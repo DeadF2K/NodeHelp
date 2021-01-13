@@ -81,8 +81,19 @@ app.get("/new-password", (req, res) => {
     }
 });
 
+app.post("/updatePostID", (req, res) => {
+    
+    if(req.session.isLoggedIn){
+        req.session.revpost = req.body.postid;
+        res.json({suc:true});
+        //res.sendFile(__dirname + '/public/post-review.html')
+    } else {
+        res.json({suc:false});
+    }
+});
+
 app.get("/post-review", (req, res) => {
-    if(req.session.isLoggedIn && (req.session.userRole === "mod" || req.session.userRole === "admin")){
+    if(req.session.isLoggedIn ){
         res.sendFile(__dirname + '/public/post-review.html')
     } else {
         req.session = null;
@@ -134,6 +145,33 @@ app.get("/getusers", (req, res) => {
                 res.json({suc:false});
             }
 
+        })
+    } else {
+        res.json({suc:false});
+    }
+});
+
+app.get("/getReviewPost", (req, res) => {
+    if(req.session.isLoggedIn){
+        const db = new Datastore("db/posts.db");
+        db.loadDatabase();
+        db.find({_id:req.session.revpost}, (err, docs) => { 
+            if(docs.length === 1) {
+                let post = [];
+                post.push({
+                    postid:docs[0]._id,
+                    username:docs[0].creatorName,
+                    showpost:docs[0].showpost,
+                    title:docs[0].title,
+                    text:docs[0].text,
+                    bcolor:docs[0].bcolor,
+                    startdate:docs[0].startDate,
+                    enddate:docs[0].endDate,
+                })
+                res.json({suc:true, post:post})
+            } else {
+                res.json({suc:false});
+            }
         })
     } else {
         res.json({suc:false});
@@ -259,6 +297,7 @@ app.post("/login", (req, res) => {
                         req.session.userid = docs[0]._id;
                         req.session.gr = docs[0].group;
                         req.session.un = docs[0].username;
+                        req.session.revpost = 0;
                         req.session.isLoggedIn = true;
                         if(userRole === "admin") {
                             res.json({suc:true, redirect:"admin"})  //login to admin page
