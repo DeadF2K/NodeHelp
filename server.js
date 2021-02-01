@@ -7,7 +7,7 @@ const session = require("express-session");
 const NedbSessionStore = require("nedb-session-store")(session);
 
 app.listen(8080, () => {
-    console.log("Who da fuq woke me up!? port 8080");
+    console.log("Server online on port 8080");
 })
 
 app.use(session({

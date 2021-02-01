@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     document.getElementById("cancelBtn").onclick = function(){
-        window.location = "/manage-posts";
+        window.location = "/main";
     }
 
     var id;
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
             var data = await response.json();
             console.log(data);
             if(data.suc || !data.suc){
-                window.location = "/manage-posts"
+                window.location = "/main"
             }
     };
 });
