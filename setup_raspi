@@ -8,6 +8,10 @@ mkdir Git
 cd Git
 git clone https://github.com/DeadF2K/NodeHelp.git
 cd NodeHelp
-mr -rf /node_modules
+rm -rf /node_modules
 npm install express
+npm install bcrypt
+npm install nedb
+npm install express-session
+npm install nedb-session-store
 node server.js
