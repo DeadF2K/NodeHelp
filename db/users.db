@@ -1,3 +1,11 @@
+{"email":"mod5@mod.de","username":"mod5","password":"$2b$10$H44H1qZ3WvdOWwYyQCA.A.MEmvBt5EYD0ZzmMNWEGUH1JEkZMRHb2","role":"mod","suspended":false,"_id":"9Gco17uc0mykfUTS"}
+{"email":"mod2@mod.de","username":"mod2","password":"$2b$10$2aBV92HeDWAPG8adH.4FjOD759BSeBsm0hbTBdfX/4yJpddDLHYoK","role":"mod","suspended":false,"_id":"HtTEXAPAsgHMTJRD"}
 {"email":"mod@mod.mod","username":"mod","password":"$2b$10$EP330BR26E0Wtw0RdqYaLOX3B3obQlmke1mAoG.00Y5TbJJ5CC0.6","role":"mod","suspended":false,"_id":"IYk5JNqg73zrWXoT"}
 {"email":"user@user.user","username":"user","password":"$2b$10$4ToAJkhNYIVMkxJeL.wuPOsponHzlih2qtHloo7sMDHmUvw7IZSQa","role":"user","group":"IYk5JNqg73zrWXoT","suspended":false,"_id":"T7V7SChU1F1j3vWE"}
+{"email":"mod3@mod.de","username":"mod3","password":"$2b$10$2JMjLfWy98n.OHurG.Z30eDAE6zgEkBD2WghnLOqZZQdX3F0uTiWu","role":"mod","suspended":false,"_id":"TcCC249XwUxagBat"}
 {"email":"admin@ghd.de","username":"admin","password":"$2b$10$30zu4TwSjMdjmnGQ.Nr6C./Tu71kEhlUHkHso2bnkKkn7Pm2q.u3e","role":"admin","_id":"VxsdGrHioVlUga4q"}
+{"email":"mod8@mod.de","username":"mod8","password":"$2b$10$4ZPGdZPQEM8Axy2wmHTTf.sMD5lOMOQFZWtSWOUKbHOzR1oYn/7si","role":"mod","suspended":false,"_id":"W6nzXBhJyWPT84ij"}
+{"email":"mod9@mod.de","username":"mod9","password":"$2b$10$eUlZgi8WqSmTEgiQQsFZ1e0BMYJ0hCmovI1dHOlFP9MsffRAPiU/O","role":"mod","suspended":false,"_id":"WwR4Bg4LFPfW6zJ6"}
+{"email":"mod4@mod.de","username":"mod4","password":"$2b$10$1aIYVY5wDt.wyRI8L5oApepOT.J6NL5Abn/7DVqGauKGvOaYs2ACu","role":"mod","suspended":false,"_id":"Xn7yCP11uQe6NyQC"}
+{"email":"mod6@mod.de","username":"mod6","password":"$2b$10$Bjjp28eN.4J2mTr8q4ZKXOCG0xKfO/K88H7qk0DfHnY2SR4oHRuFa","role":"mod","suspended":false,"_id":"nuoDnqS7KzhHiGrS"}
+{"email":"mod7@mod.de","username":"mod7","password":"$2b$10$GDEgyGmEZThR9LI7ow/SS.E8uY0IUkGxruoUf2M1qx4JT0raoYjDG","role":"mod","suspended":false,"_id":"rla1WwY7Mrk185hx"}

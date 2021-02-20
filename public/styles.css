@@ -1,8 +1,22 @@
 :root {
     --border-prop: 0px solid #F2F;
     --header-height: 10%;
-    --prime-color: #602035;
-    --text-color: white;
+    --prime-color: rgb(76, 42, 167);
+    --container-bg: rgba(30, 30, 50, 0.644);
+    --text-color: rgba(255,255,255, 1);
+    --row-color: rgba(0, 0, 100, 0.3);
+    --button-prim: rgba(255,255,255,0.1);
+    --button-sec: rgba(255, 255, 255, 0.4);
+    --popup-border: 2px solid rgba(100,100,255,1);
+    --popup-stripe: 3px solid rgba(0,0,50,0.5);
+    --title-size: 60px;
+    --text-size: 30px;
+    --smal-text: 20px;
+}
+
+div{
+    border: 0px #F2F;
+    border-style: dashed;
 }
 
 html, body {
@@ -20,12 +34,20 @@ header{
 }
 
 /*text*/
-h1 {
-    font-size: 3em;
+h1 , h2, h3, .title{
+    font-size: var(--title-size);
     padding: 0px;
     margin: 0px;
     font-family: Arial;
     color: var(--text-color);
+}
+
+h2{
+    font-size: var(--text-size);
+}
+
+h3{
+    font-size: var(--smal-text);
 }
 
 input {
@@ -54,11 +76,19 @@ input:focus {
     align-items: center;
 }
 
-.container {
+.container{
     width: 400px;
     border: var(--border-prop);
-    background-color: #00000080;
+    background-color: var(--container-bg);
     padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.user-container{
+    width: 50%;
+    min-height: 35em;
 }
 
 .header {
@@ -71,9 +101,11 @@ input:focus {
 .datasec {
     border: var(--border-prop);
     font-family: Arial;
-    font-size: 15px;
+    font-size: 30px;
     color: white;
 }
+
+/* buttons */
 
 .buttons-container {
     border: var(--border-prop);
@@ -90,7 +122,7 @@ input:focus {
     /*text*/
     color: #FFFFFF;
     text-align: center;
-    font-size: 1.75em;
+    font-size: var(--text-size);
     padding: 10px;
     width: 100%;
     cursor: pointer;
@@ -122,6 +154,12 @@ input:focus {
     right: 0;
 }
 
+.susButton , .remButton, .nextButton, .manageButton, #addBtn{
+    margin-left: 5px;
+}
+
+/* end of buttons*/
+
 #loginText {
     transition: 0.35s;
 }
@@ -134,3 +172,346 @@ input:focus {
     border: var(--border-prop);
     margin-bottom: 10px;
 }
+
+/*
+border: 1px #F2F;
+border-style: dashed;
+*/
+
+
+/* User/Mod Table */
+
+.table{
+    min-height: 32em;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--row-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.col-left , .col-right{
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+/* End of Table */
+
+/* Page Selector */
+
+.rightButtons{
+    display: flex;
+    margin-left: 10px;
+    
+}
+
+.ButtonRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+
+/* End of Page Selector*/
+
+/*-----POPUP-----*/
+.popup{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 50ms ease-in-out;
+    border: var(--popup-border);
+    z-index: 10;                            /*lay ontop of everything*/
+    background-color: var(--prime-color);
+    width: 500px;
+    max-width: 80%;
+    min-height: 18em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.popup.active{
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-header{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--popup-stripe);
+}
+
+.popup-header .title{
+    font-size: var(--text-size);
+    font-weight: bold;
+}
+
+.popup-header .close-btn{
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: var(--title-size);
+    font-weight: bold;
+    color: white;
+}
+
+.popup-body{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+#overlay{
+    position: fixed;
+    opacity: 0;
+    transition: 50ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.75);
+    pointer-events: none;
+}
+
+#overlay.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.popup-body{
+    display: fixed;
+    justify-items: center;
+}
+
+#formNewUser{
+    width: 50%;
+}
+
+input {
+    width: 100%;
+    font-family: Arial;
+    font-size: var(--text-size);
+    color: white;
+    padding: 0;
+    padding-bottom: 5px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 15px;
+    margin-top: 15px
+}
+
+input:focus {
+    outline: 0;
+}
+
+/*-----POPUP-END-----*/
+
+/* New Post Section*/
+
+
+[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text);
+    color:  rgba(0,0,0,0.5);
+}
+
+.preview-title{
+    color: #000;
+}
+
+.editor{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+.editor-menubar{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+button{
+    color: #ffffff;
+    font-size: var(--text-size);
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--button-prim);
+    cursor: pointer;
+    transition: all 250ms;
+    border: none;
+    min-width: 50px;
+    min-height: 50px;
+}
+
+button:hover{
+    background-color: var(--button-sec);
+}
+
+button:focus{
+    outline: none;
+}
+
+.regSection{
+    font-size: var(--text-size);
+}
+
+.canvas{
+    background-color: rgba(255,255,255,1);
+    width: 46.3rem;
+    height: 30rem;
+    padding: 2.5rem;
+    font-size: var(--text-size);
+    color: #000;
+    font-family: arial;
+    line-height: 1.5em;
+}
+
+.canvas:focus{
+    outline: none;
+}
+
+#title-canvas, #editor-canvas{
+    height: 4.5rem;
+    font-size: var(--title-size);
+    text-align: center;
+    text-justify: center;
+    padding: 0;
+    padding-top: 1rem;
+    width: 100%;
+    border-bottom: .5rem solid #000 ;
+}
+
+#editor-canvas{
+    padding: 5px;
+    text-align: left;
+    text-justify: left;
+    height: 30rem;
+    font-size: var(--smal-text);
+}
+
+#box{
+    display: flex;
+    flex-direction: column;
+}
+
+#cancelBtn{
+    padding: 0;
+    font-size: var(--title-size);
+    line-height: 1.8rem;
+}
+
+.postContainer{
+    width: 60em;
+}
+
+.lower{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.topper{
+    
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.calendar{
+    color: #ffffff;
+    font-size: var(--text-size);
+    padding: 1rem;
+    transition: all 250ms;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+.calendar-element{
+    border: none;
+}
+
+.calendar-element:focus{
+    outline: none;
+}
+
+#title-text{
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+}
+
+#submit-post{
+    margin-left: .5rem;
+}
+
+/* End of New Post*/
+
+/* Preview */
+
+.TitleRow{
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: var(--container-bg);
+    padding-right: 10px;
+    padding-bottom: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.titleDiv{
+    min-width: 25%;
+}
+
+#clock{
+
+}
+
+#topper{
+    height: 10%;
+    text-align: center;
+    top: 0px;
+}
+
+#content{
+    width: 100%;
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.post{
+    min-width: 30%;
+    max-width: 45%;
+    min-height: 29%;
+    max-height: 45%;
+    padding: 2vh;
+    margin: 5px;
+    border-width: 0px;
+    border-color: var(--prime);
+    color: black;
+}
+
+/* End of Preview */

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     var maxPages;
     var currentPage = 0;
-    var maxDisplayed = 8;
+    var maxDisplayed = 6;
     async function loadPosts(){
         var response = await fetch("/getliveposts", {
             method: "GET",
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function(){
         try{
         showPosts(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
         //console.log(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
-        maxPages = data.posts.length / 8;
+        maxPages = data.posts.length / maxDisplayed;
         //console.log(maxPages, currentPage+1)
         }catch(error){
             document.getElementById("content").innerHTML = "";        //empty content
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(){
             post.style.backgroundColor = element.bcolor;
             post.innerHTML = `
                 <div class="title" style="background-color:${element.bcolor};">
-                    <h2>${element.title}</h2>
+                    <h2 class="preview-title" >${element.title}</h2>
                 </div>
                 <div class="body">
                     ${element.text}

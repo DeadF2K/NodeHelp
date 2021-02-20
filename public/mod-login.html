@@ -10,47 +10,50 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
-    <div class=body>
-        <div class="container">
+    <div class=main>
+        <div class="container user-container">
             <div class="header">
                 <h1>Modseite</h1>
             </div>
-            <div class="btn">
-                <button class="logoutButton" id="changePwBtn">Change Password</button>
+            <div class="ButtonRow">
                 <button class="logoutButton" id="lgoBtn">Logout</button>
-                <button class="manageButton" id="mngBtn">Manage Posts</button>
                 
-                <button data-popup-target="#addPopup" id="addBtn">&plus;</button>
-                <div class="popup" id="addPopup">
-                    <div class="popup-header">
-                        <div class="title">Registration Form</div>
-                        <button data-close-btn class="close-btn">&times;</button>
+                <div class="rightButtons">
+                    <button class="manageButton" id="mngBtn">Manage Posts</button>
+                    <button data-popup-target="#addPopup" id="addBtn">&plus;</button>
+                    <div class="popup" id="addPopup">
+                        <div class="popup-header">
+                            <div class="title">Registration Form</div>
+                            <button data-close-btn class="close-btn">&times;</button>
+                        </div>
+                        <div class="popup-body">
+                            <form class="" id="formNewUser" method="POST">
+                                <div class="regSection">
+                                    <input type="email" id="email" required placeholder="e-Mail">
+                                </div>
+                                <div class="regSection">
+                                    <input type="text" id="username" required placeholder="Username">
+                                </div>
+                                <div class="btn">
+                                    <button type="submit" value="Create" id="submit">
+                                        <span>Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="popup-body">
-                        <form class="" id="formNewUser" method="POST">
-                            <div class="regSection">
-                                <input type="email" id="email" required placeholder="e-Mail">
-                            </div>
-                            <div class="regSection">
-                                <input type="text" id="username" required placeholder="Username">
-                            </div>
-                            <div class="btn">
-                                <button type="submit" value="Create" id="submit">
-                                    <span>Submit</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    <div class="" id="overlay"></div>
                 </div>
-                <div class="" id="overlay"></div>
             </div>
             <div class="table" id="table">
             </div>
-            <div class="pageSelect">
-                <button class="icon-backward , backButton" id="pageDown"></button>
-                <button class="icon-forward , nextButton" id="pageUp"></button>
+            <div class="ButtonRow">
+            <button class="logoutButton" id="changePwBtn">Change Password</button>
+                <div class="rightButtons">
+                    <button class="icon-backward , backButton" id="pageDown"></button>
+                    <button class="icon-forward , nextButton" id="pageUp"></button>
+                </div>
             </div>
-
         </div>
     </div>
 </body>
