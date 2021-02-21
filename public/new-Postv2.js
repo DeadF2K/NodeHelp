@@ -18,14 +18,13 @@ document.addEventListener("DOMContentLoaded", function(){
         document.execCommand("insertImage", false, document.getElementById("url").value);
     }
 
-    const textColor = document.getElementById("forecolor")
-    textColor.addEventListener('change', function(){
-        setColor(this);
-    });
+    document.getElementById("forecolor").onchange = function(){setColor(this);}
     const setColor = (element) => {
         console.log(element);
         document.execCommand(element.dataset.attribute, false, element.value);
     };
+
+    
 
     const backColor = document.getElementById("backcolor");
     const helo = document.getElementsByClassName("canvas");

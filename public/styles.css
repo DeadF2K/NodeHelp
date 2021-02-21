@@ -34,7 +34,7 @@ header{
 }
 
 /*text*/
-h1 , h2, h3, .title{
+h1, h2, h3, .title, label{
     font-size: var(--title-size);
     padding: 0px;
     margin: 0px;
@@ -42,7 +42,7 @@ h1 , h2, h3, .title{
     color: var(--text-color);
 }
 
-h2{
+h2, label{
     font-size: var(--text-size);
 }
 
@@ -50,11 +50,13 @@ h3{
     font-size: var(--smal-text);
 }
 
+
+
 input {
     width: 100%;
     font-family: Arial;
     font-size: 2em;
-    color: white;
+    color: rgb(255, 255, 255);
     padding: 0;
     padding-bottom: 5px;
     background: none;
@@ -156,6 +158,10 @@ input:focus {
 
 .susButton , .remButton, .nextButton, .manageButton, #addBtn{
     margin-left: 5px;
+}
+
+.icon{
+    pointer-events: none;
 }
 
 /* end of buttons*/
@@ -339,12 +345,13 @@ input:focus {
 
 .editor-menubar{
     display: flex;
-    flex-flow: column;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: stretch;
+    
 }
 
-button{
+button, .color-select{
     color: #ffffff;
     font-size: var(--text-size);
     padding-left: 10px;
@@ -385,18 +392,18 @@ button:focus{
 }
 
 #title-canvas, #editor-canvas{
-    height: 4.5rem;
+    height: 5rem;
     font-size: var(--title-size);
+    align-self: center;
     text-align: center;
     text-justify: center;
-    padding: 0;
-    padding-top: 1rem;
-    width: 100%;
+    padding: 10px;
+    
     border-bottom: .5rem solid #000 ;
 }
 
 #editor-canvas{
-    padding: 5px;
+    
     text-align: left;
     text-justify: left;
     height: 30rem;
@@ -464,6 +471,26 @@ button:focus{
     margin-left: .5rem;
 }
 
+.color-select{
+    background-color: var(--button-prim);
+    padding-left: 0px;
+    padding-right: 0px;
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+}
+
+.color-select:hover{
+    background-color: var(--button-sec);
+}
+
+.editor-button{
+    min-width: 50px;
+    max-width: 50px;
+    min-height: 50px;
+    max-height: 50px;
+}
+
 /* End of New Post*/
 
 /* Preview */
@@ -484,10 +511,6 @@ button:focus{
     min-width: 25%;
 }
 
-#clock{
-
-}
-
 #topper{
     height: 10%;
     text-align: center;
@@ -505,7 +528,7 @@ button:focus{
 .post{
     min-width: 30%;
     max-width: 45%;
-    min-height: 29%;
+    min-height: 28%;
     max-height: 45%;
     padding: 2vh;
     margin: 5px;
