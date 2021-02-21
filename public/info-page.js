@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+    var SwitchTime = 30; // in Seconds
 
     document.getElementById("topper").onclick = function(){
         window.location = "/main";
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function(){
         //console.log(data);
         try{
         showPosts(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
-        //console.log(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed)));
+        //console.log(data.posts.slice(0 + (currentPage * maxDisplayed), maxDisplayed + (currentPage * maxDisplayed))); 
         maxPages = data.posts.length / maxDisplayed;
         //console.log(maxPages, currentPage+1)
         }catch(error){
@@ -53,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function(){
         var h = today.getHours();
         var m = today.getMinutes();
         var s = today.getSeconds();
+        h = checkTime(h);
         m = checkTime(m);
         s = checkTime(s);
         document.getElementById('clock').innerHTML =
@@ -64,5 +66,18 @@ document.addEventListener("DOMContentLoaded", function(){
         return i;
       }
       startTime();
+
+    function changePage(){
+        if(maxPages > currentPage+1) {
+            currentPage++;     
+        }
+        else{
+            currentPage = 0;
+        }
+
+        loadPosts();
+        setTimeout(changePage, SwitchTime*1000);
+    }
+    changePage();
 });
 

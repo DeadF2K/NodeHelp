@@ -525,7 +525,15 @@ button:focus{
     flex-wrap: wrap;
 }
 
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+  }
+
 .post{
+     animation: fadein 2s ease;
+
     min-width: 30%;
     max-width: 45%;
     min-height: 28%;
@@ -537,4 +545,9 @@ button:focus{
     color: black;
 }
 
+.hidden{
+    color: red;
+}
+
 /* End of Preview */
+

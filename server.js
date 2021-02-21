@@ -491,7 +491,7 @@ app.post("/deleteMod", (req, res) => {
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
                 deleteMod(docs[0]._id);
-                setTimeout(function(){ res.json({suc:true}); }, 100);   //delay to resolve timing issue
+                setTimeout(function(){ res.json({suc:true}); }, 1000);   //delay to resolve timing issue
             } else {
                 res.json({suc:false});
             }
@@ -508,7 +508,7 @@ app.post("/deleteUser", (req, res) => {
         db.find({username:req.body.username}, (err, docs) => { 
             if(docs.length === 1) {
                 deleteUser(docs[0]._id);
-                setTimeout(function(){ res.json({suc:true}); }, 100);   //delay to resolve timing issue
+                setTimeout(function(){ res.json({suc:true}); }, 1000);   //delay to resolve timing issue
             } else {
                 res.json({suc:false});
             }
@@ -525,7 +525,7 @@ app.post("/deletePost", (req, res) => {
         db.find({_id:req.body.postid}, (err, docs) => { 
             if(docs.length === 1) {
                 deletePost(docs[0]._id);
-                setTimeout(function(){ res.json({suc:true}); }, 100);   //delay to resolve timing issue
+                setTimeout(function(){ res.json({suc:true}); }, 1000);   //delay to resolve timing issue
             } else {
                 res.json({suc:false});
             }
