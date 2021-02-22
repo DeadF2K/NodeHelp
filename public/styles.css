@@ -1,13 +1,13 @@
 :root {
     --border-prop: 0px solid #F2F;
     --header-height: 10%;
-    --prime-color: rgb(76, 42, 167);
+    --prime-color: rgb(71, 17, 221);
     --container-bg: rgba(30, 30, 50, 0.644);
     --text-color: rgba(255,255,255, 1);
     --row-color: rgba(0, 0, 100, 0.3);
     --button-prim: rgba(255,255,255,0.1);
     --button-sec: rgba(255, 255, 255, 0.4);
-    --popup-border: 2px solid rgba(100,100,255,1);
+    --popup-border: 2px solid rgb(11, 11, 128);
     --popup-stripe: 3px solid rgba(0,0,50,0.5);
     --title-size: 60px;
     --text-size: 30px;
