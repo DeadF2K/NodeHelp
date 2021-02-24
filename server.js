@@ -259,33 +259,30 @@ app.get("/getliveposts", (req, res) => {
         if(docs.length > 0) {
             let resArray = [];
             docs.forEach(element => {
-                if(element.showpost){ 
-                    const startDate = element.startDate.split("-", 3);
-                    const endDate = element.endDate.split("-", 3);
-                    if((now_year >= startDate[0]) && (now_year <= endDate[0])){
-                        if((now_month >= startDate[1]) && (now_month <= endDate[1])){
-                            if((now_day >= startDate[2]) && (now_day <= endDate[2])){
-                                db_users.find({_id:element.creatorId}, (err2, docs2) =>{
-                                    docs2.forEach(element2 => {
-                                        if(!element2.suspended)
-                                        { 
-                                            db_users.find({_id:element.creatorGroup}, (err3, docs3) =>{
-                                                docs3.forEach(element3 => {
-                                                    if(!element3.suspended)
-                                                    { 
-                                                        resArray.push({
-                                                            title:element.title,
-                                                            text:element.text,
-                                                            bcolor:element.bcolor
-                                                        })
-                                                    }
+                if(element.showpost){
+                    
+                    var start = new Date(element.startDate) - now;
+                    var end =  new Date(element.endDate) - now;
+                    if(start < 0 && end > 0){
+                        db_users.find({_id:element.creatorId}, (err2, docs2) =>{
+                            docs2.forEach(element2 => {
+                                if(!element2.suspended)
+                                { 
+                                    db_users.find({_id:element.creatorGroup}, (err3, docs3) =>{
+                                        docs3.forEach(element3 => {
+                                            if(!element3.suspended)
+                                            { 
+                                                resArray.push({
+                                                    title:element.title,
+                                                    text:element.text,
+                                                    bcolor:element.bcolor
                                                 })
-                                            })
-                                        }
+                                            }
+                                        })
                                     })
-                                })                                
-                            }
-                        }
+                                }
+                            })
+                        })
                     }
                 }                               
             });

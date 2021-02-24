@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
-    var SwitchTime = 30; // in Seconds
+    var SwitchTime = 10; // in Seconds
 
     document.getElementById("topper").onclick = function(){
         window.location = "/main";
@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function(){
         }
         else{
             currentPage = 0;
+            loadPosts();
         }
 
         loadPosts();
