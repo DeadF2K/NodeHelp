@@ -248,9 +248,6 @@ app.get("/getposts", (req, res) => {
 
 app.get("/getliveposts", (req, res) => {
     const now = new Date();
-    const now_year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now);
-    const now_month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(now);
-    const now_day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
     const db_post = new Datastore("db/posts.db");
     db_post.loadDatabase();
     const db_users = new Datastore("db/users.db");
